@@ -19,37 +19,24 @@ public class HelloWorldSwingPanel extends JPanel {
 	public HelloWorldSwingPanel() {
 		formattedTextLabel = new JLabel("thing");
 		
-		JPanel fontSizePanel = new FontSizePanel();
+		JPanel fontSizePanel = this.formFontSizePanel();
 		add(fontSizePanel);
 		
-		JPanel fontStylePanel = new FontStylePanel();
+		JPanel fontStylePanel = this.formFontStylePanel();
 	    fontStylePanel.setLayout(new BoxLayout(fontStylePanel, BoxLayout.Y_AXIS));
 	    add(fontStylePanel);
 		
 		add(formattedTextLabel);
 	}
 	
-	private class FontSizePanel extends JPanel {
-		private final String[] fontSizeTags = new String[] {"Tiny", "Small", "Medium", "Large"};
+	protected JPanel formFontSizePanel() {
+		final String[] fontSizeTags = new String[] {"Tiny", "Small", "Medium", "Large"};
 		
-		private JLabel textLabel;
-		private JTextField inputField;
-		private JComboBox<String> fontSizeBox;
+		final JLabel textLabel = new JLabel("Text: ");
+		final JTextField inputField = new JTextField("thing");
+		final JComboBox<String> fontSizeBox = new JComboBox<String>(fontSizeTags);
 		
-		public FontSizePanel() {
-			textLabel = new JLabel("Text: ");
-			add(textLabel);
-			
-			inputField = new JTextField("thing");
-			inputField.addActionListener(new TextFieldListener());
-			add(inputField);
-			
-			fontSizeBox = new JComboBox<String>(fontSizeTags);
-			fontSizeBox.addActionListener(new FontSizeListener());
-		    add(fontSizeBox);
-		}
-		
-		private class TextFieldListener implements ActionListener {
+		class TextFieldListener implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -58,7 +45,7 @@ public class HelloWorldSwingPanel extends JPanel {
 			
 		}
 		
-		private class FontSizeListener implements ActionListener {
+		class FontSizeListener implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				String selectedItem = (String) fontSizeBox.getSelectedItem();
@@ -77,36 +64,25 @@ public class HelloWorldSwingPanel extends JPanel {
 			}
 			
 		}
+		
+		JPanel panel = new JPanel();
+		
+		inputField.addActionListener(new TextFieldListener());
+		fontSizeBox.addActionListener(new FontSizeListener());
+	    
+	    panel.add(textLabel);
+	    panel.add(inputField);
+	    panel.add(fontSizeBox);
+	    return panel;
 	}
 	
-	private class FontStylePanel extends JPanel {
-		private JRadioButton plain, bold, italic, boldItalic;
+	protected JPanel formFontStylePanel() {
+		final JRadioButton plain = new JRadioButton("Plain");
+		final JRadioButton bold = new JRadioButton("Bold");
+		final JRadioButton italic = new JRadioButton("Italic");
+		final JRadioButton boldItalic = new JRadioButton("Bold Italic");
 		
-		public FontStylePanel() {
-			plain = new JRadioButton("Plain");
-			bold = new JRadioButton("Bold");
-			italic = new JRadioButton("Italic");
-			boldItalic = new JRadioButton("Bold Italic");
-			
-			FontStyleListener listener = new FontStyleListener();
-			plain.addActionListener(listener);
-			bold.addActionListener(listener);
-			italic.addActionListener(listener);
-			boldItalic.addActionListener(listener);
-			
-			ButtonGroup bg = new ButtonGroup();
-			bg.add(plain);
-			bg.add(bold);
-			bg.add(italic);
-			bg.add(boldItalic);
-			
-			add(plain);
-			add(bold);
-			add(italic);
-			add(boldItalic);
-		}
-		
-		private class FontStyleListener implements ActionListener {
+		class FontStyleListener implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -126,6 +102,26 @@ public class HelloWorldSwingPanel extends JPanel {
 			}
 			
 		}
+		
+		JPanel panel = new JPanel();
+		FontStyleListener listener = new FontStyleListener();
+		plain.addActionListener(listener);
+		bold.addActionListener(listener);
+		italic.addActionListener(listener);
+		boldItalic.addActionListener(listener);
+		
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(plain);
+		bg.add(bold);
+		bg.add(italic);
+		bg.add(boldItalic);
+		
+		panel.add(plain);
+		panel.add(bold);
+		panel.add(italic);
+		panel.add(boldItalic);
+		
+		return panel;
 	}
 	
 }
