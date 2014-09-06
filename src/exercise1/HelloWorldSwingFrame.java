@@ -1,5 +1,6 @@
 package exercise1;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -23,7 +24,6 @@ public class HelloWorldSwingFrame extends JFrame {
 	
 	public HelloWorldSwingFrame() {
 		super("HelloWorldSwing!");
-	    super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    super.setSize(new Dimension(370, 220));
 	    
 		formattedTextLabel = new JLabel("thing");
@@ -34,10 +34,11 @@ public class HelloWorldSwingFrame extends JFrame {
 	    fontStylePanel.setLayout(new BoxLayout(fontStylePanel, BoxLayout.Y_AXIS));
 	    
 	    JPanel panel = new JPanel();
-	    panel.add(fontSizePanel);
-	    panel.add(fontStylePanel);
-	    panel.add(formattedTextLabel);
-	    panel.add(buttonPanel);
+	    panel.setLayout(new BorderLayout());
+	    panel.add(fontSizePanel, BorderLayout.NORTH);
+	    panel.add(fontStylePanel, BorderLayout.WEST);
+	    panel.add(formattedTextLabel, BorderLayout.EAST);
+	    panel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		super.add(panel);
 	}
