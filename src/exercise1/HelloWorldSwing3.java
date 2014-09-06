@@ -11,14 +11,7 @@ import javax.swing.JTextField;
 
 public class HelloWorldSwing3 {
 	public static void main(String[] args) {
-		JFrame frame = new JFrame("HelloWorldSwing!");
-
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    frame.setSize(new Dimension(370, 220));
-
-	    JPanel panel = new HelloWorldSwingPanel(frame);
-
-	    frame.add(panel);
+		JFrame frame = new HelloWorldSwingFrame3();
 	    
 	    //frame.pack();
 	    frame.setVisible(true);

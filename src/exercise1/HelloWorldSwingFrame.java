@@ -1,6 +1,8 @@
 package exercise1;
 
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,26 +17,27 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-public class HelloWorldSwingPanel extends JPanel {
+public class HelloWorldSwingFrame extends JFrame {
 	
-	private JFrame frame;
 	private JLabel formattedTextLabel;
 	
-	public HelloWorldSwingPanel(JFrame frame) {
-		this.frame = frame;
-		formattedTextLabel = new JLabel("thing");
-		
-		JPanel fontSizePanel = this.formFontSizePanel();
-		add(fontSizePanel);
-		
-		JPanel fontStylePanel = this.formFontStylePanel();
-	    fontStylePanel.setLayout(new BoxLayout(fontStylePanel, BoxLayout.Y_AXIS));
-	    add(fontStylePanel);
+	public HelloWorldSwingFrame() {
+		super("HelloWorldSwing!");
+	    super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    super.setSize(new Dimension(370, 220));
 	    
+		formattedTextLabel = new JLabel("thing");
+		JPanel fontSizePanel = this.formFontSizePanel();
+		JPanel fontStylePanel = this.formFontStylePanel();
 	    JPanel buttonPanel = this.formButtonPanel();
-	    add(buttonPanel);
+	    
+	    JPanel panel = new JPanel();
+	    panel.add(fontSizePanel);
+	    panel.add(fontStylePanel);
+	    panel.add(formattedTextLabel);
+	    panel.add(buttonPanel);
 		
-		add(formattedTextLabel);
+		super.add(panel);
 	}
 	
 	protected JPanel formFontSizePanel() {
@@ -145,7 +148,7 @@ public class HelloWorldSwingPanel extends JPanel {
 		class ExitButtonListener implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				frame.dispose();
+				HelloWorldSwingFrame.super.dispose();
 			}
 		}
 		
