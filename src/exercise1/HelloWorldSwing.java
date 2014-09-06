@@ -16,7 +16,7 @@ public class HelloWorldSwing {
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    frame.setSize(new Dimension(370, 220));
 
-	    JPanel panel = new HelloWorldSwingPanel();
+	    JPanel panel = new HelloWorldSwingPanel(frame);
 
 	    frame.add(panel);
 	    

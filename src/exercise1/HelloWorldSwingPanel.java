@@ -1,13 +1,15 @@
 package exercise1;
 
-import java.awt.Component;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -15,8 +17,11 @@ import javax.swing.JTextField;
 
 public class HelloWorldSwingPanel extends JPanel {
 	
+	private JFrame frame;
 	private JLabel formattedTextLabel;
-	public HelloWorldSwingPanel() {
+	
+	public HelloWorldSwingPanel(JFrame frame) {
+		this.frame = frame;
 		formattedTextLabel = new JLabel("thing");
 		
 		JPanel fontSizePanel = this.formFontSizePanel();
@@ -25,6 +30,9 @@ public class HelloWorldSwingPanel extends JPanel {
 		JPanel fontStylePanel = this.formFontStylePanel();
 	    fontStylePanel.setLayout(new BoxLayout(fontStylePanel, BoxLayout.Y_AXIS));
 	    add(fontStylePanel);
+	    
+	    JPanel buttonPanel = this.formButtonPanel();
+	    add(buttonPanel);
 		
 		add(formattedTextLabel);
 	}
@@ -124,4 +132,34 @@ public class HelloWorldSwingPanel extends JPanel {
 		return panel;
 	}
 	
+	protected JPanel formButtonPanel() {
+		class ShowButtonListener implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Color oldFontColor = formattedTextLabel.getForeground();
+				Color newFontColor = oldFontColor == Color.RED ? Color.BLACK : Color.RED;
+				formattedTextLabel.setForeground(newFontColor);
+			}
+		}
+		
+		class ExitButtonListener implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				frame.dispose();
+			}
+		}
+		
+		JPanel panel = new JPanel();
+		
+		final JButton showButton = new JButton("Show!");
+		showButton.addActionListener(new ShowButtonListener());
+		
+		final JButton exitButton = new JButton("Exit");
+		exitButton.addActionListener(new ExitButtonListener());
+		
+		panel.add(showButton);
+		panel.add(exitButton);
+		
+		return panel;
+	}
 }
