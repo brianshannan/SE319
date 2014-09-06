@@ -31,6 +31,8 @@ public class HelloWorldSwingFrame extends JFrame {
 		JPanel fontStylePanel = this.formFontStylePanel();
 	    JPanel buttonPanel = this.formButtonPanel();
 	    
+	    fontStylePanel.setLayout(new BoxLayout(fontStylePanel, BoxLayout.Y_AXIS));
+	    
 	    JPanel panel = new JPanel();
 	    panel.add(fontSizePanel);
 	    panel.add(fontStylePanel);
