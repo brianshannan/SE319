@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 
 public class HelloWorldSwingFrame extends JFrame {
 	
-	private JLabel formattedTextLabel;
+	protected JLabel formattedTextLabel;
 	
 	public HelloWorldSwingFrame() {
 		super("HelloWorldSwing!");
@@ -29,7 +29,7 @@ public class HelloWorldSwingFrame extends JFrame {
 		formattedTextLabel = new JLabel("thing");
 		JPanel fontSizePanel = this.formFontSizePanel();
 		JPanel fontStylePanel = this.formFontStylePanel();
-	    JPanel buttonPanel = this.formButtonPanel();
+	    JPanel buttonPanel = this.formButtonPanel(new ShowButtonListener());
 	    
 	    fontStylePanel.setLayout(new BoxLayout(fontStylePanel, BoxLayout.Y_AXIS));
 	    
@@ -51,12 +51,10 @@ public class HelloWorldSwingFrame extends JFrame {
 		final JComboBox<String> fontSizeBox = new JComboBox<String>(fontSizeTags);
 		
 		class TextFieldListener implements ActionListener {
-
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				formattedTextLabel.setText(inputField.getText()); 
 			}
-			
 		}
 		
 		class FontSizeListener implements ActionListener {
@@ -138,15 +136,18 @@ public class HelloWorldSwingFrame extends JFrame {
 		return panel;
 	}
 	
-	protected JPanel formButtonPanel() {
-		class ShowButtonListener implements ActionListener {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Color oldFontColor = formattedTextLabel.getForeground();
-				Color newFontColor = oldFontColor == Color.RED ? Color.BLACK : Color.RED;
-				formattedTextLabel.setForeground(newFontColor);
-			}
+	class ShowButtonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Color oldFontColor = formattedTextLabel.getForeground();
+			Color newFontColor = oldFontColor == Color.RED ? Color.BLACK : Color.RED;
+			formattedTextLabel.setForeground(newFontColor);
 		}
+	}
+	
+	protected JPanel formButtonPanel(ShowButtonListener showButtonListener) {
+		final JButton showButton = new JButton("Show!");
+		final JButton exitButton = new JButton("Exit");
 		
 		class ExitButtonListener implements ActionListener {
 			@Override
@@ -157,10 +158,7 @@ public class HelloWorldSwingFrame extends JFrame {
 		
 		JPanel panel = new JPanel();
 		
-		final JButton showButton = new JButton("Show!");
-		showButton.addActionListener(new ShowButtonListener());
-		
-		final JButton exitButton = new JButton("Exit");
+		showButton.addActionListener(showButtonListener);
 		exitButton.addActionListener(new ExitButtonListener());
 		
 		panel.add(showButton);
