@@ -4,10 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -17,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 public class HelloWorldSwingFrame extends JFrame {
 	
@@ -26,18 +30,23 @@ public class HelloWorldSwingFrame extends JFrame {
 		super("HelloWorldSwing!");
 	    super.setSize(new Dimension(370, 220));
 	    
-		formattedTextLabel = new JLabel("thing");
+		formattedTextLabel = new JLabel("Hello World!  ");
 		JPanel fontSizePanel = this.formFontSizePanel();
 		JPanel fontStylePanel = this.formFontStylePanel();
 	    JPanel buttonPanel = this.formButtonPanel(new ShowButtonListener());
 	    
 	    fontStylePanel.setLayout(new BoxLayout(fontStylePanel, BoxLayout.Y_AXIS));
+	    buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+	    buttonPanel.setBorder(new EmptyBorder(0, 10, 10, 10));
+	    fontSizePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+	    formattedTextLabel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+	    formattedTextLabel.setBorder(new EmptyBorder(10, 50, 10, 10));
 	    
 	    JPanel panel = new JPanel();
 	    panel.setLayout(new BorderLayout());
 	    panel.add(fontSizePanel, BorderLayout.NORTH);
 	    panel.add(fontStylePanel, BorderLayout.WEST);
-	    panel.add(formattedTextLabel, BorderLayout.EAST);
+	    panel.add(formattedTextLabel, BorderLayout.CENTER);
 	    panel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		super.add(panel);
@@ -46,14 +55,14 @@ public class HelloWorldSwingFrame extends JFrame {
 	protected JPanel formFontSizePanel() {
 		final String[] fontSizeTags = new String[] {"Tiny", "Small", "Medium", "Large"};
 		
-		final JLabel textLabel = new JLabel("Text: ");
-		final JTextField inputField = new JTextField("thing");
+		final JLabel textLabel = new JLabel("Text:   ");
+		final JTextField inputField = new JTextField(formattedTextLabel.getText(), 10);
 		final JComboBox<String> fontSizeBox = new JComboBox<String>(fontSizeTags);
 		
 		class TextFieldListener implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				formattedTextLabel.setText(inputField.getText()); 
+				formattedTextLabel.setText(inputField.getText());
 			}
 		}
 		
@@ -161,7 +170,9 @@ public class HelloWorldSwingFrame extends JFrame {
 		showButton.addActionListener(showButtonListener);
 		exitButton.addActionListener(new ExitButtonListener());
 		
+	
 		panel.add(showButton);
+		panel.add(Box.createHorizontalStrut(50));
 		panel.add(exitButton);
 		
 		return panel;
