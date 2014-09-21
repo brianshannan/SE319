@@ -17,6 +17,9 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.xml.sax.SAXException;
 
+/***
+ * Represent xml file as a JTree
+ */
 public class XMLTree extends JTree {
     private static final long serialVersionUID = 1L;
 

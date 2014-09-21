@@ -40,12 +40,16 @@ public class XMLTreeFrame extends JFrame {
         tree.setRootVisible(true);
         tree.setDragEnabled(true);
         tree.setDropMode(DropMode.ON_OR_INSERT);
+        // Only allow one thing to be selected at once... Simplifies drag and
+        // drop
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         JTextField textField = new JTextField();
         textField.setEditable(false);
+        // Control editing
         tree.setCellEditor(new XMLTreeCellEditor(tree, (DefaultTreeCellRenderer) tree
                 .getCellRenderer(), new DefaultCellEditor(textField)));
+        // Enable drag and drop
         tree.setTransferHandler(new XMLTreeTransferHandler());
 
         treePane = new JScrollPane(tree);
