@@ -1,6 +1,8 @@
 package portfolio1;
 
 import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.stream.XMLStreamException;
@@ -28,6 +30,7 @@ public class XMLTreeWriter {
         try {
             writer.writeStartElement(node.getUserObject().toString());
 
+            List<DefaultMutableTreeNode> elements = new LinkedList<DefaultMutableTreeNode>();
             Enumeration<DefaultMutableTreeNode> children = node.children();
             while (children.hasMoreElements()) {
                 DefaultMutableTreeNode child = children.nextElement();
@@ -35,8 +38,13 @@ public class XMLTreeWriter {
                 if(child.isLeaf()) {
                     writeLeaf(child.getUserObject().toString());
                 } else {
-                    writeTree(child);
+                    // Attributes must be written before child elements
+                    elements.add(child);
                 }
+            }
+
+            for(DefaultMutableTreeNode element : elements) {
+                writeTree(element);
             }
 
             writer.writeEndElement();

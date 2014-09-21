@@ -25,7 +25,7 @@ public class XMLTreeFrame extends JFrame {
     public XMLTreeFrame(String fileName) {
         this.fileName = fileName;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 300);
+        setSize(600, 300);
 
         JPanel buttonPanel = getButtonPanel();
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
