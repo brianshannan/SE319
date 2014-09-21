@@ -33,44 +33,37 @@ public class XMLTreeWriter {
         try {
             writer.writeStartElement(node.getUserObject().toString());
 
-            List<DefaultMutableTreeNode> elements = new LinkedList<DefaultMutableTreeNode>();
+            List<DefaultMutableTreeNode> nonAttributes = new LinkedList<DefaultMutableTreeNode>();
             Enumeration<DefaultMutableTreeNode> children = node.children();
             while (children.hasMoreElements()) {
                 DefaultMutableTreeNode child = children.nextElement();
+                Object obj = child.getUserObject();
 
-                if(child.isLeaf()) {
-                    writeLeaf(child.getUserObject());
+                // Write attributes first, defer elements and text until later;
+                if(obj instanceof XMLAttribute) {
+                    try {
+                        writer.writeAttribute(((XMLAttribute) obj).getName(),
+                                ((XMLAttribute) obj).getValue());
+                    } catch (XMLStreamException e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    // Attributes must be written before child elements
-                    elements.add(child);
+                    nonAttributes.add(child);
                 }
             }
 
-            for(DefaultMutableTreeNode element : elements) {
-                writeTree(element);
+            for(DefaultMutableTreeNode nonAttribute : nonAttributes) {
+                Object obj = nonAttribute.getUserObject();
+                if(obj instanceof XMLElement) {
+                    writeTree(nonAttribute);
+                } else {
+                    writer.writeCharacters(obj.toString());
+                }
             }
 
             writer.writeEndElement();
         } catch (XMLStreamException e) {
             e.printStackTrace();
-        }
-    }
-
-    private void writeLeaf(Object obj) {
-        if(obj instanceof XMLAttribute) {
-            try {
-                writer.writeAttribute(((XMLAttribute) obj).getName(),
-                        ((XMLAttribute) obj).getValue());
-            } catch (XMLStreamException e) {
-                e.printStackTrace();
-            }
-        } else {
-            // It's just text
-            try {
-                writer.writeCharacters(obj.toString());
-            } catch (XMLStreamException e) {
-                e.printStackTrace();
-            }
         }
     }
 }
