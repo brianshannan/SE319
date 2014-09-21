@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.DropMode;
@@ -25,17 +26,15 @@ public class XMLTreeFrame extends JFrame {
 
     private XMLTree tree;
     private JScrollPane treePane;
-    private String fileName;
 
-    public XMLTreeFrame(String fileName) {
-        this.fileName = fileName;
+    public XMLTreeFrame(File file) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 300);
 
         JPanel buttonPanel = getButtonPanel();
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
-        tree = new XMLTree(fileName);
+        tree = new XMLTree(file);
         tree.setShowsRootHandles(true);
         tree.setEditable(true);
         tree.setRootVisible(true);

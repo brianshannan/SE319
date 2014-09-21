@@ -1,6 +1,9 @@
 package portfolio1;
 
 import java.awt.EventQueue;
+import java.io.File;
+
+import javax.swing.JOptionPane;
 
 public class XMLTreeMain {
 
@@ -8,7 +11,13 @@ public class XMLTreeMain {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    XMLTreeFrame frame = new XMLTreeFrame("testXML.xml");
+                    String fileName = JOptionPane.showInputDialog("Please enter the file");
+                    File file = new File(fileName);
+                    if(!file.exists()) {
+                        System.out.println("File doesn't exist, exiting");
+                        return;
+                    }
+                    XMLTreeFrame frame = new XMLTreeFrame(file);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -16,5 +25,4 @@ public class XMLTreeMain {
             }
         });
     }
-
 }

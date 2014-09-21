@@ -20,14 +20,14 @@ import org.xml.sax.SAXException;
 public class XMLTree extends JTree {
     private static final long serialVersionUID = 1L;
 
-    private String fileName;
+    private File file;
     private DefaultTreeModel model;
     private SAXParserFactory saxParserFactory;
     private XMLOutputFactory xmlOutputFactory;
 
-    public XMLTree(String fileName) {
+    public XMLTree(File file) {
         super();
-        this.fileName = fileName;
+        this.file = file;
         saxParserFactory = SAXParserFactory.newInstance();
         xmlOutputFactory = XMLOutputFactory.newInstance();
         loadTreeFromFile();
@@ -38,7 +38,7 @@ public class XMLTree extends JTree {
         SAXParser parser;
         try {
             parser = saxParserFactory.newSAXParser();
-            parser.parse(new File(fileName), new XMLTreeReader(this));
+            parser.parse(file, new XMLTreeReader(this));
         } catch (IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
@@ -47,8 +47,7 @@ public class XMLTree extends JTree {
     public void writeTreeToFile() {
         XMLStreamWriter writer;
         try {
-            writer = xmlOutputFactory
-                    .createXMLStreamWriter(new FileOutputStream(new File(fileName)));
+            writer = xmlOutputFactory.createXMLStreamWriter(new FileOutputStream(file));
             XMLTreeWriter treeWriter = new XMLTreeWriter(writer);
             treeWriter.writeTree(this);
         } catch (FileNotFoundException | XMLStreamException e) {
