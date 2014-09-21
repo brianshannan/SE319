@@ -36,7 +36,7 @@ public class XMLTreeWriter {
                 DefaultMutableTreeNode child = children.nextElement();
 
                 if(child.isLeaf()) {
-                    writeLeaf(child.getUserObject().toString());
+                    writeLeaf(child.getUserObject());
                 } else {
                     // Attributes must be written before child elements
                     elements.add(child);
@@ -53,21 +53,18 @@ public class XMLTreeWriter {
         }
     }
 
-    private void writeLeaf(String text) {
-        if(text.startsWith("@")) {
-            // It's an attribute
+    private void writeLeaf(Object obj) {
+        if(obj instanceof XMLAttribute) {
             try {
-                int bracketIndex = text.indexOf('[');
-                String name = text.substring(1, bracketIndex);
-                String value = text.substring(bracketIndex + 1, text.length() - 1);
-                writer.writeAttribute(name, value);
+                writer.writeAttribute(((XMLAttribute) obj).getName(),
+                        ((XMLAttribute) obj).getValue());
             } catch (XMLStreamException e) {
                 e.printStackTrace();
             }
         } else {
             // It's just text
             try {
-                writer.writeCharacters(text);
+                writer.writeCharacters(obj.toString());
             } catch (XMLStreamException e) {
                 e.printStackTrace();
             }

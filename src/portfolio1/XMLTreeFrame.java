@@ -5,13 +5,16 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
 public class XMLTreeFrame extends JFrame {
@@ -39,6 +42,11 @@ public class XMLTreeFrame extends JFrame {
         tree.setDragEnabled(true);
         tree.setDropMode(DropMode.ON_OR_INSERT);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+
+        JTextField textField = new JTextField();
+        textField.setEditable(false);
+        tree.setCellEditor(new XMLTreeCellEditor(tree, (DefaultTreeCellRenderer) tree
+                .getCellRenderer(), new DefaultCellEditor(textField)));
         tree.setTransferHandler(new XMLTreeTransferHandler());
 
         treePane = new JScrollPane(tree);
@@ -113,10 +121,19 @@ public class XMLTreeFrame extends JFrame {
             }
         });
 
+        JButton thing = new JButton("thing");
+        thing.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                tree.stopEditing();
+            }
+        });
+
         panel.add(addChildElement, BorderLayout.WEST);
         panel.add(addAttribute);
         panel.add(removeNode);
         panel.add(saveFile);
+        panel.add(thing);
         return panel;
     }
 }
