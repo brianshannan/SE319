@@ -54,7 +54,6 @@ public class XMLTreeReader extends DefaultHandler {
         if(text.isEmpty()) {
             return;
         }
-        System.out.println(text);
 
         DefaultMutableTreeNode textNode = new DefaultMutableTreeNode(text);
         nodeStack.peek().add(textNode);

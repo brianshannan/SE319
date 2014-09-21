@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<people>
-    <student thing="something">
-        <name>John</name>
-        <course>Computer Technology</course>
-        <semester>6</semester>
-        <scheme>E</scheme>
-    </student>
-
-    <student>
-        <name>Foo</name>
-        <course>Industrial Electronics</course>
-        <semester>6</semester>
-        <scheme>E</scheme>
-    </student>
-</people>
+<?xml version="1.0" ?><people><student thing="something"><name>Brian</name><course>Computer Technology</course><semester>6</semester><scheme>E</scheme></student><student><name>Foo</name><course>Industrial Electronics</course><semester>6</semester><scheme>E</scheme></student></people>

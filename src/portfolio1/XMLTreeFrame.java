@@ -95,9 +95,18 @@ public class XMLTreeFrame extends JFrame {
             }
         });
 
+        JButton saveFile = new JButton("Save To File");
+        saveFile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                tree.writeTreeToFile();
+            }
+        });
+
         panel.add(addChildElement, BorderLayout.WEST);
         panel.add(addAttribute);
         panel.add(removeNode);
+        panel.add(saveFile);
         return panel;
     }
 }
