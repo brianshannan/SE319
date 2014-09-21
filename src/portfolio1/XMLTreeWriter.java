@@ -36,6 +36,7 @@ public class XMLTreeWriter {
                 DefaultMutableTreeNode child = children.nextElement();
 
                 if(child.isLeaf()) {
+                    System.out.println(child.getUserObject().getClass());
                     writeLeaf(child.getUserObject().toString());
                 } else {
                     // Attributes must be written before child elements

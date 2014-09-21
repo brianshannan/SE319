@@ -60,7 +60,7 @@ public class XMLTree extends JTree {
     }
 
     public void addChildElement(DefaultMutableTreeNode parentNode, String name) {
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(name);
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(new XMLElement(name));
         model.insertNodeInto(node, parentNode, parentNode.getChildCount());
     }
 

@@ -22,7 +22,7 @@ public class XMLTreeReader extends DefaultHandler {
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) {
-        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(qName);
+        DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new XMLElement(qName));
         // No current node so it must be the root, make a new model
         if(nodeStack.empty()) {
             tree.setModel(new DefaultTreeModel(newNode));
@@ -32,8 +32,11 @@ public class XMLTreeReader extends DefaultHandler {
         }
 
         for(int i = 0; i < attributes.getLength(); i++) {
-            DefaultMutableTreeNode attributeNode = new DefaultMutableTreeNode('@'
-                    + attributes.getQName(i) + '[' + attributes.getValue(i) + ']');
+            // DefaultMutableTreeNode attributeNode = new
+            // DefaultMutableTreeNode('@'
+            // + attributes.getQName(i) + '[' + attributes.getValue(i) + ']');
+            DefaultMutableTreeNode attributeNode = new DefaultMutableTreeNode(new XMLAttribute(
+                    attributes.getQName(i), attributes.getValue(i)));
             newNode.add(attributeNode);
         }
 
