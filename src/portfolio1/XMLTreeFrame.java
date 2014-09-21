@@ -29,7 +29,7 @@ public class XMLTreeFrame extends JFrame {
 
     public XMLTreeFrame(File file) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 300);
+        setSize(700, 300);
 
         JPanel buttonPanel = getButtonPanel();
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
@@ -49,7 +49,7 @@ public class XMLTreeFrame extends JFrame {
         tree.setTransferHandler(new XMLTreeTransferHandler());
 
         treePane = new JScrollPane(tree);
-        treePane.setPreferredSize(new Dimension(450, 200));
+        treePane.setPreferredSize(new Dimension(700, 220));
         getContentPane().add(treePane, BorderLayout.NORTH);
     }
 
@@ -95,6 +95,25 @@ public class XMLTreeFrame extends JFrame {
             }
         });
 
+        JButton addText = new JButton("Add Text");
+        addAttribute.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Identify the node that has been selected
+                DefaultMutableTreeNode selected = (DefaultMutableTreeNode) tree
+                        .getLastSelectedPathComponent();
+
+                if(selected == null) {
+                    return;
+                }
+
+                String value = JOptionPane
+                        .showInputDialog("Please enter the name for the text node");
+
+                tree.addTextNode(selected, value);
+            }
+        });
+
         JButton removeNode = new JButton("Remove Node");
         removeNode.addActionListener(new ActionListener() {
             @Override
@@ -120,19 +139,11 @@ public class XMLTreeFrame extends JFrame {
             }
         });
 
-        JButton thing = new JButton("thing");
-        thing.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                tree.stopEditing();
-            }
-        });
-
         panel.add(addChildElement, BorderLayout.WEST);
         panel.add(addAttribute);
+        panel.add(addText);
         panel.add(removeNode);
         panel.add(saveFile);
-        panel.add(thing);
         return panel;
     }
 }
