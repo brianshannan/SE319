@@ -20,8 +20,10 @@ public class XMLTreeFrame extends JFrame {
 
     private XMLTree tree;
     private JScrollPane treePane;
+    private String fileName;
 
     public XMLTreeFrame(String fileName) {
+        this.fileName = fileName;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 300);
 
@@ -32,7 +34,6 @@ public class XMLTreeFrame extends JFrame {
         treePane = new JScrollPane(tree);
         treePane.setPreferredSize(new Dimension(450, 200));
         getContentPane().add(treePane, BorderLayout.NORTH);
-
     }
 
     private JPanel getButtonPanel() {

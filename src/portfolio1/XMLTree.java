@@ -30,7 +30,7 @@ public class XMLTree extends JTree {
         SAXParser parser;
         try {
             parser = SAXParserFactory.newInstance().newSAXParser();
-            parser.parse(new File(fileName), new XMLTreeHandler(this));
+            parser.parse(new File(fileName), new XMLTreeReader(this));
         } catch (IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }

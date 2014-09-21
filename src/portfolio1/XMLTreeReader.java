@@ -9,12 +9,12 @@ import javax.swing.tree.DefaultTreeModel;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class XMLTreeHandler extends DefaultHandler {
+public class XMLTreeReader extends DefaultHandler {
 
     private JTree tree;
     private Stack<DefaultMutableTreeNode> nodeStack;
 
-    public XMLTreeHandler(JTree tree) {
+    public XMLTreeReader(JTree tree) {
         super();
         this.tree = tree;
         nodeStack = new Stack<DefaultMutableTreeNode>();
