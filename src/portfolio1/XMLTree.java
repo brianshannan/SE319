@@ -32,9 +32,6 @@ public class XMLTree extends JTree {
         xmlOutputFactory = XMLOutputFactory.newInstance();
         loadTreeFromFile();
         model = (DefaultTreeModel) this.getModel();
-        this.setShowsRootHandles(true);
-        this.setEditable(true);
-        this.setRootVisible(true);
     }
 
     public void loadTreeFromFile() {

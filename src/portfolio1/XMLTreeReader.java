@@ -37,6 +37,7 @@ public class XMLTreeReader extends DefaultHandler {
             // + attributes.getQName(i) + '[' + attributes.getValue(i) + ']');
             DefaultMutableTreeNode attributeNode = new DefaultMutableTreeNode(new XMLAttribute(
                     attributes.getQName(i), attributes.getValue(i)));
+            attributeNode.setAllowsChildren(false);
             newNode.add(attributeNode);
         }
 

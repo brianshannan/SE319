@@ -5,12 +5,14 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 
 public class XMLTreeFrame extends JFrame {
     /**
@@ -31,6 +33,14 @@ public class XMLTreeFrame extends JFrame {
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
         tree = new XMLTree(fileName);
+        tree.setShowsRootHandles(true);
+        tree.setEditable(true);
+        tree.setRootVisible(true);
+        tree.setDragEnabled(true);
+        tree.setDropMode(DropMode.ON_OR_INSERT);
+        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tree.setTransferHandler(new XMLTreeTransferHandler());
+
         treePane = new JScrollPane(tree);
         treePane.setPreferredSize(new Dimension(450, 200));
         getContentPane().add(treePane, BorderLayout.NORTH);
