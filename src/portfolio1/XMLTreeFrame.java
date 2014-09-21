@@ -72,6 +72,9 @@ public class XMLTreeFrame extends JFrame {
 
                 String elementName = JOptionPane
                         .showInputDialog("Please enter the name for the element");
+                if(elementName == null) {
+                    return;
+                }
 
                 tree.addChildElement(selected, elementName);
             }
@@ -94,13 +97,16 @@ public class XMLTreeFrame extends JFrame {
 
                 String attributeValue = JOptionPane
                         .showInputDialog("Please enter the value for the attribute");
+                if(attributeName == null || attributeValue == null) {
+                    return;
+                }
 
                 tree.addAttribute(selected, attributeName, attributeValue);
             }
         });
 
         JButton addText = new JButton("Add Text");
-        addAttribute.addActionListener(new ActionListener() {
+        addText.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Identify the node that has been selected
@@ -113,6 +119,9 @@ public class XMLTreeFrame extends JFrame {
 
                 String value = JOptionPane
                         .showInputDialog("Please enter the name for the text node");
+                if(value == null) {
+                    return;
+                }
 
                 tree.addTextNode(selected, value);
             }
