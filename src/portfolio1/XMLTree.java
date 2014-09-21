@@ -18,7 +18,10 @@ import javax.xml.stream.XMLStreamWriter;
 import org.xml.sax.SAXException;
 
 /***
- * Represent xml file as a JTree
+ * Represent xml file as a JTree.
+ * 
+ * Read contents from this file to form it, write tree to file to save. Support
+ * for namespaces is lacking. Rudimentary editing is supported.
  */
 public class XMLTree extends JTree {
     private static final long serialVersionUID = 1L;

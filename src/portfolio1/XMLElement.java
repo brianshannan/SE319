@@ -1,5 +1,8 @@
 package portfolio1;
 
+/**
+ * Represents and xml element
+ */
 public class XMLElement {
     private String name;
 

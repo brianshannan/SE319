@@ -5,6 +5,10 @@ import java.io.File;
 
 import javax.swing.JOptionPane;
 
+/**
+ * Main class to represent an xml file as a JTree and do basic editing. The file
+ * you wish to represent is obtained through a dialog box.
+ */
 public class XMLTreeMain {
 
     public static void main(String[] args) {

@@ -1,5 +1,8 @@
 package portfolio1;
 
+/**
+ * Represents and xml text node
+ */
 public class XMLTextNode {
     private String value;
 

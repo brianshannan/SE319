@@ -9,6 +9,9 @@ import javax.swing.tree.DefaultTreeModel;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+/**
+ * Make a JTree from and xml file.
+ */
 public class XMLTreeReader extends DefaultHandler {
 
     private JTree tree;

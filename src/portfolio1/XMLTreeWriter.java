@@ -8,6 +8,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+/**
+ * Writes the JTree back out to the file
+ */
 public class XMLTreeWriter {
 
     private XMLStreamWriter writer;

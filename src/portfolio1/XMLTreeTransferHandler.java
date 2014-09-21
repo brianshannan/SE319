@@ -12,6 +12,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+/**
+ * Enables drag and drop behavior in the JTree
+ */
 public class XMLTreeTransferHandler extends TransferHandler {
     private static final long serialVersionUID = 1L;
     private DataFlavor flavor;

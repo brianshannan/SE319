@@ -18,10 +18,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
+/**
+ * Controller for representing an xml file as a JTree
+ */
 public class XMLTreeFrame extends JFrame {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
 
     private XMLTree tree;

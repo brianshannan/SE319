@@ -9,6 +9,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+/**
+ * Custom editor so the xml format is kept, doesn't lose focus right away, must
+ * do that manually.
+ */
 public class XMLTreeCellEditor extends DefaultTreeCellEditor {
 
     public XMLTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer, DefaultCellEditor editor) {

@@ -1,5 +1,8 @@
 package portfolio1;
 
+/**
+ * Represents an xml attribute
+ */
 public class XMLAttribute {
     private String name;
     private String value;
