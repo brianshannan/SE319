@@ -6,14 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.DefaultCellEditor;
 import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
@@ -44,11 +42,9 @@ public class XMLTreeFrame extends JFrame {
         // drop
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-        JTextField textField = new JTextField();
-        textField.setEditable(false);
-        // Control editing
+        // Control editting
         tree.setCellEditor(new XMLTreeCellEditor(tree, (DefaultTreeCellRenderer) tree
-                .getCellRenderer(), new DefaultCellEditor(textField)));
+                .getCellRenderer()));
         // Enable drag and drop
         tree.setTransferHandler(new XMLTreeTransferHandler());
 

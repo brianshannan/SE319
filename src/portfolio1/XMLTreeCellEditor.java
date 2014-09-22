@@ -4,6 +4,7 @@ import java.awt.Component;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellEditor;
@@ -15,8 +16,8 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  */
 public class XMLTreeCellEditor extends DefaultTreeCellEditor {
 
-    public XMLTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer, DefaultCellEditor editor) {
-        super(tree, renderer, editor);
+    public XMLTreeCellEditor(JTree tree, DefaultTreeCellRenderer renderer) {
+        super(tree, renderer, getEditor());
     }
 
     @Override
@@ -41,5 +42,11 @@ public class XMLTreeCellEditor extends DefaultTreeCellEditor {
 
         node.setUserObject(content);
         return super.getTreeCellEditorComponent(tree, value, isSelected, expanded, leaf, row);
+    }
+
+    public static DefaultCellEditor getEditor() {
+        JTextField textField = new JTextField();
+        textField.setEditable(false);
+        return new DefaultCellEditor(textField);
     }
 }
