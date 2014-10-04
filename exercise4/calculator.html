@@ -1,0 +1,14 @@
+<html>
+    <body>
+        <div id="calc"/>
+    </body>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="calculator.js"></script>
+    <script>
+        $(document).ready(function() {
+            var calculator = new Calculator();
+            $('#calc').append(calculator.getHTML());
+        })
+    </script>
+</html>
