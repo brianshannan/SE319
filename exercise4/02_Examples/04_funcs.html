@@ -1,0 +1,43 @@
+<html>
+<head>
+<!--
+  THE PURPOSE OF THIS EXAMPLE IS TO SHOW HOW FUNCTION DECLARATION
+  HOISTING WORKS.
+
+  ALSO, NOTE HOW FUNCTION EXPRESSION DECLARATIONS CAN BE USED IN
+  EVENT HANDLERS (because they are executed AFTER the function
+  expressions are executed - although physically they may be placed
+  after the use in event handlers).
+
+  ONE PROBLEM WITH THAT IS THAT IF HTML IS RENDERED BEFORE JS HAS
+  EXECUTED  AND IF SOMEONE CLICKS ON THE BUTTON - nothing will happen.
+-->
+</head>
+
+<body>
+<input type="button" value="ClickMe" onclick="sub(100,20);" />
+
+<script>
+
+// FUNCTION DECLARATION HOISTING
+
+// WHY DOES THIS WORK? FUNCTION DECLARATION HOISTING!
+document.write("<h1> using add() before declaring it "
+                    + add(10,20) + "</h1><br>");
+
+// WAY ONE: FUNCTION DECLARATION
+function add (num1, num2) { return num1 + num2; }
+
+//sub(10,20);
+
+// WAY TWO: FUNCTION EXPRESSIONS
+var sub = function(num1, num2) {
+   document.write("<h1> sub  "+ (num1 -  num2) + "</h1><br>");
+}
+
+sub(10,20);
+
+
+</script>
+</body>
+</html>
