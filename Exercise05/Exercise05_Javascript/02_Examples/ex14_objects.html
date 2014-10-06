@@ -1,0 +1,57 @@
+<html>
+<head>
+<script>
+
+// WAYS OF CREATING OBJECTS ---
+
+// -----------------
+// Constructor pattern
+// -----------------
+
+function Student () { // called a constructor
+  this.name = "Tom";
+  this.foo = function() {alert("hi"); };
+};
+
+var stu1 = new Student(); // create a new object, assign this, do, return
+stu1.name = "Sally";
+alert(JSON.stringify(stu1));
+alert(stu1 instanceof Student);
+alert(stu1 instanceof Object);
+alert("stu1 constructor is " + stu1.constructor);
+alert("stu1's prototype is " +
+JSON.stringify(Object.getPrototypeOf(stu1)));
+
+
+// TODO: NOTE THAT instanceof works for this way of creating objects.
+
+
+var stu2 = new Student();
+alert(JSON.stringify(stu2));
+alert("stu2 constructor is " + stu2.constructor);
+alert("stu2's prototype is " +
+JSON.stringify(Object.getPrototypeOf(stu2)));
+
+
+// PROBLEM: the function is duplicated!
+alert(stu1.foo === stu2.foo); // this is FALSE
+
+// TODO: Notice that functions are DUPLICATED in every instance using
+// this pattern! That's why they are not equal.
+
+// what happens if we do the following?
+// TODO: Explain what is "this" in the below invocation.
+Student(); // call the function Student; what is "this"?
+
+// some provided constructors 
+// Object, Boolean, String, Number, 
+// Array, Function, RegExp,
+// Date
+
+// --- END --- YAY! ------
+
+</script>
+</head>
+<body>
+</body>
+</html>

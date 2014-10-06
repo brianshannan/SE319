@@ -1,0 +1,105 @@
+<html>
+<head>
+<script src="jquery-1.11.1.js"></script>
+<script>
+// REMAINING about functions ---
+
+// self-invoke a function
+(function (x, y) {alert (x+y);})(100,200);
+
+// TODO:write an anonymous function to calculate factorial using loop 
+// and self invoke it to find 4! Use alert to show result.
+
+
+// -----------------------------------------
+// Understanding this and apply,call,and bind
+// -----------------------------------------
+// Functions are objects. They have a Call, Apply, and Bind method
+// You can ask it to use a this temporarily using
+// Call and Apply. Call  uses commas to separate arguments
+// Apply just uses an array
+// Only difference is in how they expect arguments
+
+$(document).ready(function() {
+
+var user = {
+    data:[
+      {name:"T. Woods", age:37},
+      {name:"P. Mickelson", age:43}
+    ],
+    clickHandler:function (s, event) {
+      try {
+        alert(s + this.data[0].name);
+      }
+      catch (err) {
+        alert("s + error reading data -" + this + "-" + err);
+      }
+    }
+} // end of user
+
+alert("Press ok");
+
+// example1: (wrong this!) 
+$("#p1").click(user.clickHandler);
+
+
+
+// example2: (what's this here?)
+$("#p2").click(user.clickHandler.bind(user));
+
+
+
+// example3: what's this here? Note: call and apply are similar
+var user2 = {
+    data:[
+      {name:"Sam", age:37},
+      {name:"Pam", age:43}
+    ]
+};
+
+user.clickHandler.call(user2, "calling user2 "); // temporarily uses user2 as this
+user.clickHandler.apply(user2,["calling user2 "]);
+
+
+
+
+// example4: calling it directly
+user.clickHandler("calling user ");
+
+
+
+// example5: again use of bind
+var foo2 = user.clickHandler.bind(user2);
+foo2("calling user's clickHandler but expecting user2 ");
+
+
+
+// example6: foo2 is bound to user2!
+foo2.call(user, "calling user but expecting user2 ");
+
+// TODO: Answer these questions
+// Q1. what's the difference between call and apply?
+// Q2. what does bind allow you to do?
+
+
+}); // end of ready
+
+// --- END --- YAY! ------
+
+</script>
+</head>
+<body>
+<h1>
+<p id="p1">
+How are you doing?
+</p>
+<br>
+<br>
+<br>
+<br>
+<p id="p2">
+Very well, Thank you!
+</p>
+</h1>
+</body>
+</html>

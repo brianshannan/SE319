@@ -1,0 +1,45 @@
+<html>
+<head>
+<script>
+
+// WAYS OF CREATING OBJECTS ---
+
+// -----------------
+// Prototype pattern
+// -----------------
+function Person() {};
+Person.prototype.name = "Nicholas";
+Person.prototype.foo = function() {alert("hi");};
+Person.prototype.friends = ["Tom","Sally"];
+
+var p1 = new Person();
+var p2 = new Person();
+
+// Is function duplicated?
+alert(p1.foo === p2.foo);
+
+alert("p1's constructor is " + p1.constructor);
+alert("p1's prototype is " +
+JSON.stringify(Object.getPrototypeOf(p1)));
+
+alert("p2's constructor is " + p2.constructor);
+alert("p2's prototype is " +
+JSON.stringify(Object.getPrototypeOf(p2)));
+// Problem: references point to same place
+
+p1.friends.push("Jerry");
+alert("p2's friends are: " 
+  + p2.friends + "\nshould it have Jerry?"); // show p2's friends
+
+// TODO: Note that the methods are not duplicated. That's good.
+// TODO: Are the constructors same? prototypes?
+// TODO: Find out what's the problem with the prototype pattern?
+
+
+// --- END --- YAY! ------
+
+</script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<html>
+<head>
+</head>
+
+<body>
+<script id="myScript"> 
+try {
+
+// CREATE A JSON STRING
+var myText = "{ \"name\" : \"Tom\" }";
+
+// CONVERT TO object
+var myObj = JSON.parse(myText);
+
+// CHECK IF IT WORKS
+alert(myObj.name);
+alert(myObj["name"]);
+
+// CONVERT back to STRING
+var myConvertedObject = JSON.stringify(myObj);
+alert(myConvertedObject);
+
+var testObj = {
+ a : "abc",
+ b : "def",
+ f : function () { alert("hi") },
+ g : [1,2,3,4,"hi"]
+};
+
+// TODO: CONVERT testobj to a JSON String format
+// var text =  ??? ;
+// alert(text);
+
+} 
+
+//TODO: CONVERT text to a JS object 
+//var convertedObj = ??? ;
+//alert(convertedObj["a"]);
+//alert(convertedObj.b);
+//alert(convertedObj.g);
+
+catch (error) {
+  alert("error: " + error.message);
+}
+</script>
+</body>
+</html>

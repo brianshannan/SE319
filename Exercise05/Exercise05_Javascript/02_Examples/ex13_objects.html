@@ -1,0 +1,34 @@
+<html>
+<head>
+<script>
+
+// WAYS OF CREATING OBJECTS ---
+
+// TODO: Understand why this pattern for creating objects does not work.
+
+// -----------------
+// Factory pattern
+// -----------------
+function createStudent() {
+  var o = new Object();
+  o.name = "Tom";
+  o.foo = function() { alert("hi");};
+  return o;
+}
+
+var obj3 = createStudent();
+alert(JSON.stringify(obj3));
+alert("obj3's constructor is " + obj3.constructor);
+alert("obj3's prototype is " +
+JSON.stringify(Object.getPrototypeOf(obj3)));
+
+// Problem with Factory pattern here
+// instanceof operator will not work
+
+// --- END --- YAY! ------
+
+</script>
+</head>
+<body>
+</body>
+</html>
