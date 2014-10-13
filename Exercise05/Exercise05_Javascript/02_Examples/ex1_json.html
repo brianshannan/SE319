@@ -28,16 +28,16 @@ var testObj = {
 };
 
 // TODO: CONVERT testobj to a JSON String format
-// var text =  ??? ;
-// alert(text);
+var text =  JSON.stringify(testObj);
+alert(text);
 
 } 
 
 //TODO: CONVERT text to a JS object 
-//var convertedObj = ??? ;
-//alert(convertedObj["a"]);
-//alert(convertedObj.b);
-//alert(convertedObj.g);
+var convertedObj = JSON.parse(text);
+alert(convertedObj["a"]);
+alert(convertedObj.b);
+alert(convertedObj.g);
 
 catch (error) {
   alert("error: " + error.message);
