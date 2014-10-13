@@ -1,0 +1,164 @@
+<html>
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <link href="httP://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+        <script src="./booksLibrary.js"></script>
+        <title>Library System</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <h1 class="page-header">Library System</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <h3>Add New Book</h3>
+                    <form role="form" id='addForm'>
+                      <div class="form-group">
+                        <label for="addName">Name</label>
+                        <input type="text" class="form-control" id="addName">
+                      </div>
+                      <div class="form-group">
+                        <label for="addAuthor">Author</label>
+                        <input type="text" class="form-control" id="addAuthor">
+                      </div>
+                      <div class="form-group">
+                        <label for="addISBN">ISBN</label>
+                        <input type="text" class="form-control" id="addISBN">
+                      </div>
+                      <div class="form-group">
+                        <label for="addCount">Count</label>
+                        <input type="number" class="form-control" id="addCount">
+                      </div>
+                      <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+                <div class="col-md-3">
+                    <h3>Search Book</h3>
+                    <form role="form" id="searchForm">
+                      <div class="form-group">
+                        <label for="searchName">Name</label>
+                        <input type="text" class="form-control" id="searchName">
+                      </div>
+                      <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                    <div id="alertbox"></div>
+                    </br>
+                    <h3>Remove Book</h3>
+                    <form role="form" id="removeForm">
+                      <div class="form-group">
+                        <label for="removeName">Name</label>
+                        <input type="text" class="form-control" id="removeName">
+                      </div>
+                      <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                    <div id="removeAlert"></div>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-bordered">
+                        <thead id='thead'></thead>
+                        <tbody id='tbody'></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <script type="text/javascript">
+        var library = null;
+        $(document).ready(function() {
+            library = new Library();
+        });
+
+        $('#addForm').submit(function(event) {
+            event.preventDefault();
+            var name = document.forms['addForm']['addName'].value;
+            var author = document.forms['addForm']['addAuthor'].value;
+            var isbn = document.forms['addForm']['addISBN'].value;
+            var count = document.forms['addForm']['addCount'].value;
+
+            if (name && author && isbn && parseInt(count) > 0) {
+                newBook = new Book(name, author, isbn);
+                library.addNCopies(newBook, count);
+                printLibrary();
+            }else {
+                alert("Please Enter Valid Data");
+            }
+
+        });
+
+        $('#searchForm').submit(function(event) {
+            event.preventDefault();
+            var name = document.forms['searchForm']['searchName'].value;
+            var location = library.findLocation(name);
+            var alertBox = $('#alertbox');
+            if (location) {
+                alertBox.removeClass('alert-error');
+                alertBox.addClass('alert alert-success');
+                alertBox.text('Shelf: '+ location.shelf + ' Row: ' + location.row);
+            } else {
+                alertBox.removeClass('alert-success');
+                alertBox.addClass('alert alert-error');
+                alertBox.text('Book not found!');
+            }
+        });
+
+        $('#removeForm').submit(function(event) {
+            event.preventDefault();
+            var name = document.forms['removeForm']['removeName'].value;
+            var count = library.removeBook(name);
+            var alertBox = $('#removeAlert');
+            if (count > 1){
+                alertBox.removeClass('alert-error');
+                alertBox.addClass('alert alert-success');
+                alertBox.text('Removed '+ count + ' books!');
+                printLibrary();
+            } else {
+                alertBox.removeClass('alert-success');
+                alertBox.addClass('alert alert-error');
+                alertBox.text('Book not found!');
+            }
+        });
+
+        var printLibrary = function() {
+            var head = $('#thead'),
+                body = $('#tbody');
+            head.empty();
+            body.empty();
+            var header = $('<tr></tr>');
+            for(var i = 0; i < library.shelves.length; i++){
+                header.append($('<th>Shelf-'+ parseInt(i + 1) +'</th>'));
+                for(var j = 0; j < 10; j++){
+                    var name;
+                    if (library.shelves[i].books[j]) {
+                        name = library.shelves[i].books[j].name;
+                    }else{
+                        name = 'NONE';
+                    }
+                    if(i === 0){
+                        if (name === 'NONE'){
+                            body.append('<tr id="row-' +j +'"><td>'+ name +'</td></tr>');
+                        } else {
+                            body.append('<tr id="row-' +j +'"><td><a onclick="alertBook(this)">'+ name +'</a></td></tr>');
+                        }
+                    }else{
+                        if (name === 'NONE'){
+                            $('#row-' + j).append('<td>'+ name +'</td>');
+                        } else {
+                            $('#row-' + j).append('<td><a onclick="alertBook(this)">'+ name +'</a></td>');
+                        }
+
+                    }
+                }
+            }
+            head.append(header);
+        };
+
+        var alertBook = function (link) {
+            var book = library.getBookByName(link.text);
+            alert("Book: " + book.name + " Author: " + book.author + " ISBN: " + book.isbn);
+        };
+    </script>
+    </body>
+</html>
