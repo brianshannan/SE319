@@ -9,6 +9,13 @@
 
 // TODO:write an anonymous function to calculate factorial using loop 
 // and self invoke it to find 4! Use alert to show result.
+(function(n) {
+  var prod = 1;
+  for(; n > 1; n--) {
+    prod *= n;
+  }
+  alert(prod);
+})(4);
 
 
 // -----------------------------------------
@@ -79,7 +86,9 @@ foo2.call(user, "calling user but expecting user2 ");
 
 // TODO: Answer these questions
 // Q1. what's the difference between call and apply?
+// Call takes the arguments to call user2 with as individual arguments to call, apply takes them as an array
 // Q2. what does bind allow you to do?
+// Set what the variable 'this' will be the in function when it is called
 
 
 }); // end of ready

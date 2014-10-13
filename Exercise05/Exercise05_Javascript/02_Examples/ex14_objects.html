@@ -9,6 +9,7 @@
 // -----------------
 
 function Student () { // called a constructor
+    console.log(this);
   this.name = "Tom";
   this.foo = function() {alert("hi"); };
 };
@@ -42,6 +43,7 @@ alert(stu1.foo === stu2.foo); // this is FALSE
 // what happens if we do the following?
 // TODO: Explain what is "this" in the below invocation.
 Student(); // call the function Student; what is "this"?
+// Window, as the 'new' operator was not used
 
 // some provided constructors 
 // Object, Boolean, String, Number, 

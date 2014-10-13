@@ -35,8 +35,11 @@ $(document).ready(function()
           $("p").css("color","blue").click(function() {alert("hi");}).show();
        });
 
-     // TODO: using jquery when we hover over p with id p3,
-     // make it very large (i.e. change its font size)
+      // TODO: using jquery when we hover over p with id p3,
+      // make it very large (i.e. change its font size)
+      $("p#p3").mouseover(function() {
+        $("p#p3").css("font-size", 70);
+      })
 
 
 
