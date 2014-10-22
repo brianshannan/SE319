@@ -1,0 +1,23 @@
+<html>
+<head>
+  <title>Tetris</title>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="./tetris.css">
+</head>
+
+<body>
+  <h1>Tetris</h1>
+  <div>
+    <canvas id="canvas" width="250" height="500"></canvas>
+  </div>
+  <input type="button" id="restartButton" value="Restart Game" />
+  <p id="gameInProgress">Game is in progress.  You will automatically join if either player leaves.</p>
+
+
+
+<script type="text/javascript" src="./tetris.js"></script>
+<script type="text/javascript">
+var tetris = new Tetris();
+</script>
+</body>
+</html>
