@@ -6,17 +6,28 @@ $db_username = "u319all";
 $db_password = "024IjLaMj4dI";
 $db_server = "mysql.cs.iastate.edu";
 $db_name   = "db319all";
-$db_connection = mysqli_connect($db_server, $db_username, $db_password, $db_name)
+$db_connection = mysqli_connect($db_server, $db_username, $db_password, $db_name);
 
 class Library {
     const GROUP_NUMBER = 32;
     private $shelves;
 
     function __construct() {
-        $shelves = array();
+        global $db_connection;
+        $this->shelves = array();
+
+        $group_number = self::GROUP_NUMBER;
+        $get_shelves_query = "SELECT Shelfid FROM shelves WHERE Groupnumber = $group_number";
+        $result = mysqli_query($db_connection, $get_shelves_query);
+        echo('thing');
+        while($row = mysqli_fetch_assoc($result)) {
+            array_push($this->shelves, new Shelf($row['Shelfid']));
+        }
     }
 
     public function addBook($book_id, $book_name, $author) {
+        global $db_connection;
+
         $group_number = self::GROUP_NUMBER;
         // Add to books table
         $insert_book_query = "INSERT INTO books (Groupnumber, Bookid, Booktitle, Author) VALUES ('$group_number', '$book_id', '$book_name', '$author')";
@@ -29,6 +40,8 @@ class Library {
     }
 
     public function deleteBook($book_id, $book_name, $author) {
+        global $db_connection;
+
         $group_number = self::GROUP_NUMBER;
         // Remove from books Countable
         $remove_book_query = "DELETE FROM books WHERE Groupnumber = $group_number AND Bookid = $book_id";
@@ -43,8 +56,10 @@ class Library {
     }
 
     public function borrow($book_id) {
+        global $db_connection;
+
         $group_number = self::GROUP_NUMBER;
-        $copy_id_query = "SELECT Copyid from bookscopy WHERE Bookid = $book_id LIMIT 1;";
+        $copy_id_query = "SELECT Copyid FROM bookscopy WHERE Bookid = $book_id LIMIT 1;";
         $copy_id_result = mysqli_query($db_connection, $copy_id_query);
         $copy_id = mysqli_fetch_assoc($copy_id_result)['Copyid'];
 
@@ -53,10 +68,14 @@ class Library {
         mysqli_query($db_connection, $query);
     }
 
-    public function return($book_id) {
+    public function returnBook($book_id) {
+        global $db_connection;
+
         $group_number = self::GROUP_NUMBER;
 
-        $copy_id = "";  // TODO
+        $copy_id_query = "SELECT Copyid FROM bookscopy WHERE Bookid = $book_id LIMIT 1;";
+        $copy_id_result = my_query($db_connection, $copy_id_query);
+        $copy_id = mysqli_fetch_assoc($copy_id_result)['Copyid'];  // TODO
 
         $today = date("Y-m-d");
         $query = "UPDATE loanHistory SET Returnedondate = '$today' WHERE Groupnumber = '$group_number' AND Returnedondate IS NULL AND Username = '$username' AND Copyid = $copy_id;";
@@ -66,21 +85,33 @@ class Library {
 
 class Shelf {
     const GROUP_NUMBER = 32;
+    private $shelf_id;
     private $books;
+    private $len = 10;
 
-    function __construct() {
-        $books = array();
+    function __construct($shelf_id) {
+        global $db_connection;
+
+        $this->shelf_id = $shelf_id;
+        $this->books = array();
+        $get_copies_query = "SELECT Booktitle, Author FROM shelves INNER JOIN bookscopy USING (Copyid) INNER JOIN books using (Bookid) WHERE shelves.Groupnumber = $group_number AND Shelfid = $shelf_id";
+        $books_result = mysqli_query($db_connection, $get_shelves_query);
+        while($row = mysqli_fetch_assoc($result)) {
+            array_push($this->books, new BookCopy($row['Booktitle'], $row['Author']));
+        }
+    }
+
+    public function addBook($book) {
+        array_push($this->books, $book);
     }
 }
 
-class Book {
+class BookCopy {
     const GROUP_NUMBER = 32;
-    private $book_id;
     private $book_name;
     private $author;
 
-    function __construct($book_id, $book_name, $author) {
-        $this->book_id = $book_id;
+    function __construct($book_name, $author) {
         $this->book_name = $book_name;
         $this->author = $author;
     }
@@ -89,6 +120,8 @@ class Book {
 class User {
     const GROUP_NUMBER = 32;
 }
+
+$lib = new Library();
 
 
 ?>
