@@ -25,7 +25,7 @@ class Library {
         }
     }
 
-    public function addBook($book_id, $book_name, $author) {
+    public function addBook($book_name, $author) {
         global $db_connection;
 
         $group_number = self::GROUP_NUMBER;
@@ -37,10 +37,29 @@ class Library {
         $insert_copy_query = "INSERT INTO bookscopy (Groupnumber, Bookid) VALUES ('$group_number', '$book_id');";
         mysqli_query($db_connection, $insert_copy_query);
 
+        foreach($this->shelves as $shelf) {
+            if(count($shelf) < $shelf->len) {
+                $shelf_id = $shelf->shelf_id;
+                $copy_shelf_query = "INSERT INTO shelves (Groupnumber, Shelfid, Copyid) VALUES ($group_number, $shelf_id, LAST_INSERT_ID())";
+                mysqli_query($db_connection, $copy_shelf_query);
+                $book = new Book($book_name, $author);
+                $shelf->addBook($book);
+                return;
+            }
+        }
+        // Need to make a new Shelf
+        $copy_shelf_query = "INSERT INTO shelves (Groupnumber, Copyid) VALUES ($group_number, LAST_INSERT_ID())";
+        mysqli_query($copy_shelf_query);
+        $result = mysqli_query($db_connection, "SELECT LAST_INSERT_ID() AS shelf_id");
+        $shelf_id = mysqli_fetch_assoc($result)['shelf_id'];
+        $shelf = new Shelf($shelf_id);
+        array_push($this->shelves, $shelf);
     }
 
     public function deleteBook($book_id, $book_name, $author) {
         global $db_connection;
+
+        // TODO
 
         $group_number = self::GROUP_NUMBER;
         // Remove from books Countable
@@ -85,9 +104,9 @@ class Library {
 
 class Shelf {
     const GROUP_NUMBER = 32;
-    private $shelf_id;
+    public $shelf_id;
     private $books;
-    private $len = 10;
+    public $len = 10;
 
     function __construct($shelf_id) {
         global $db_connection;
@@ -119,6 +138,8 @@ class BookCopy {
 
 class User {
     const GROUP_NUMBER = 32;
+
+    function __constructor() {}
 }
 
 $lib = new Library();
