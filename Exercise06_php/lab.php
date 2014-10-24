@@ -30,19 +30,22 @@ class Library {
 
         $group_number = self::GROUP_NUMBER;
         // Add to books table
-        $insert_book_query = "INSERT INTO books (Groupnumber, Bookid, Booktitle, Author) VALUES ('$group_number', '$book_id', '$book_name', '$author')";
+        $insert_book_query = "INSERT INTO books (Groupnumber, Booktitle, Author) VALUES ('$group_number', '$book_name', '$author')";
         mysqli_query($db_connection, $insert_book_query);
+        $result = mysqli_query($db_connection, "SELECT LAST_INSERT_ID() AS book_id");
+        $book_id = mysqli_fetch_assoc($result)['book_id'];
 
         // Add copy of book to BooksCopy table
         $insert_copy_query = "INSERT INTO bookscopy (Groupnumber, Bookid) VALUES ('$group_number', '$book_id');";
         mysqli_query($db_connection, $insert_copy_query);
 
+        // Space in existing shelves
         foreach($this->shelves as $shelf) {
             if(count($shelf) < $shelf->len) {
                 $shelf_id = $shelf->shelf_id;
                 $copy_shelf_query = "INSERT INTO shelves (Groupnumber, Shelfid, Copyid) VALUES ($group_number, $shelf_id, LAST_INSERT_ID())";
                 mysqli_query($db_connection, $copy_shelf_query);
-                $book = new Book($book_name, $author);
+                $book = new Book($book_id, $book_name, $author);
                 $shelf->addBook($book);
                 return;
             }
@@ -54,20 +57,28 @@ class Library {
         $shelf_id = mysqli_fetch_assoc($result)['shelf_id'];
         $shelf = new Shelf($shelf_id);
         array_push($this->shelves, $shelf);
+        $book = new Book($book_id, $book_name, $author);
+        $shelf->addBook($book);
     }
 
     public function deleteBook($book_id, $book_name, $author) {
         global $db_connection;
 
-        // TODO
-
         $group_number = self::GROUP_NUMBER;
-        // Remove from books Countable
+
         $remove_book_query = "DELETE FROM books WHERE Groupnumber = $group_number AND Bookid = $book_id";
         mysqli_query($db_connection, $remove_book_query);
 
         $remove_copies_query = "DELETE FROM bookscopy WHERE Groupnumber = $group_number AND Bookid = $book_id";
         mysqli_query($db_connection, $remove_copies_query);
+
+        foreach($this->shelves as $shelf) {
+            foreach($shelf->books as $key => $book) {
+                if($book->book_id == $book_id) {
+                    unset($shelf->books[$key]);
+                }
+            }
+        }
     }
 
     public function viewLoanHistory($username) {
@@ -105,7 +116,7 @@ class Library {
 class Shelf {
     const GROUP_NUMBER = 32;
     public $shelf_id;
-    private $books;
+    public $books;
     public $len = 10;
 
     function __construct($shelf_id) {
@@ -127,10 +138,12 @@ class Shelf {
 
 class BookCopy {
     const GROUP_NUMBER = 32;
+    public $book_id;
     private $book_name;
     private $author;
 
-    function __construct($book_name, $author) {
+    function __construct($book_id, $book_name, $author) {
+        $this->book_id = $book_id;
         $this->book_name = $book_name;
         $this->author = $author;
     }
