@@ -19,21 +19,19 @@ class Library {
         $group_number = self::GROUP_NUMBER;
         $get_shelves_query = "SELECT Shelfid FROM shelves WHERE Groupnumber = $group_number";
         $result = mysqli_query($db_connection, $get_shelves_query);
-        echo('thing');
         while($row = mysqli_fetch_assoc($result)) {
             array_push($this->shelves, new Shelf($row['Shelfid']));
         }
     }
 
-    public function addBook($book_name, $author) {
+    public function addBook($book_id, $book_name, $author) {
         global $db_connection;
 
         $group_number = self::GROUP_NUMBER;
+
         // Add to books table
-        $insert_book_query = "INSERT INTO books (Groupnumber, Booktitle, Author) VALUES ('$group_number', '$book_name', '$author')";
+        $insert_book_query = "INSERT INTO books (Groupnumber, Bookid, Booktitle, Author) VALUES ('$group_number', '$book_id', '$book_name', '$author')";
         mysqli_query($db_connection, $insert_book_query);
-        $result = mysqli_query($db_connection, "SELECT LAST_INSERT_ID() AS book_id");
-        $book_id = mysqli_fetch_assoc($result)['book_id'];
 
         // Add copy of book to BooksCopy table
         $insert_copy_query = "INSERT INTO bookscopy (Groupnumber, Bookid) VALUES ('$group_number', '$book_id');";
@@ -43,7 +41,7 @@ class Library {
         foreach($this->shelves as $shelf) {
             if(count($shelf) < $shelf->len) {
                 $shelf_id = $shelf->shelf_id;
-                $copy_shelf_query = "INSERT INTO shelves (Groupnumber, Shelfid, Copyid) VALUES ($group_number, $shelf_id, LAST_INSERT_ID())";
+                $copy_shelf_query = "INSERT INTO shelves (Groupnumber, Shelfid, Copyid) VALUES ('$group_number', '$shelf_id', LAST_INSERT_ID())";
                 mysqli_query($db_connection, $copy_shelf_query);
                 $book = new Book($book_id, $book_name, $author);
                 $shelf->addBook($book);
@@ -52,7 +50,7 @@ class Library {
         }
         // Need to make a new Shelf
         $copy_shelf_query = "INSERT INTO shelves (Groupnumber, Copyid) VALUES ($group_number, LAST_INSERT_ID())";
-        mysqli_query($copy_shelf_query);
+        mysqli_query($db_connection, $copy_shelf_query);
         $result = mysqli_query($db_connection, "SELECT LAST_INSERT_ID() AS shelf_id");
         $shelf_id = mysqli_fetch_assoc($result)['shelf_id'];
         $shelf = new Shelf($shelf_id);
@@ -61,15 +59,15 @@ class Library {
         $shelf->addBook($book);
     }
 
-    public function deleteBook($book_id, $book_name, $author) {
+    public function deleteBook($book_id) {
         global $db_connection;
 
         $group_number = self::GROUP_NUMBER;
 
-        $remove_book_query = "DELETE FROM books WHERE Groupnumber = $group_number AND Bookid = $book_id";
+        $remove_book_query = "DELETE FROM books WHERE Groupnumber = '$group_number' AND Bookid = '$book_id'";
         mysqli_query($db_connection, $remove_book_query);
 
-        $remove_copies_query = "DELETE FROM bookscopy WHERE Groupnumber = $group_number AND Bookid = $book_id";
+        $remove_copies_query = "DELETE FROM bookscopy WHERE Groupnumber = '$group_number' AND Bookid = '$book_id'";
         mysqli_query($db_connection, $remove_copies_query);
 
         foreach($this->shelves as $shelf) {
@@ -82,10 +80,29 @@ class Library {
     }
 
     public function viewLoanHistory($username) {
-        // TODO
+        global $db_connection;
+
+        $group_number = self::GROUP_NUMBER;
+        $query = "SELECT * FROM loanHistory WHERE Groupnumber = '$group_number'";
+        $result = mysqli_query($db_connection, $query);
+        $table = "<table>";
+
+        while($row = mysqli_fetch_assoc($result)) {
+            $username = $row["Username"];
+            $copy_id = $row["Copyid"];
+            $due_date = $row["Duedate"];
+            $returned_on_date = $row["Returnedondate"];
+
+            $t_row = "<tr><td>$username</td><td>$copy_id</td><td>$due_date</td><td>$returned_on_date</td></tr>";
+            $table = $table . $t_row;
+        }
+
+
+        $table = $table . "</table>";
+        return $table;
     }
 
-    public function borrow($book_id) {
+    public function borrowBook($book_id) {
         global $db_connection;
 
         $group_number = self::GROUP_NUMBER;
@@ -105,11 +122,19 @@ class Library {
 
         $copy_id_query = "SELECT Copyid FROM bookscopy WHERE Bookid = $book_id LIMIT 1;";
         $copy_id_result = my_query($db_connection, $copy_id_query);
-        $copy_id = mysqli_fetch_assoc($copy_id_result)['Copyid'];  // TODO
+        $copy_id = mysqli_fetch_assoc($copy_id_result)['Copyid'];
 
         $today = date("Y-m-d");
         $query = "UPDATE loanHistory SET Returnedondate = '$today' WHERE Groupnumber = '$group_number' AND Returnedondate IS NULL AND Username = '$username' AND Copyid = $copy_id;";
         mysqli_query($db_connection, $query);
+    }
+
+    public function getShelves() {
+        $table = "<table>";
+
+
+
+        $table = $table . "</table>";
     }
 }
 
@@ -121,13 +146,14 @@ class Shelf {
 
     function __construct($shelf_id) {
         global $db_connection;
+        $group_number = self::GROUP_NUMBER;
 
         $this->shelf_id = $shelf_id;
         $this->books = array();
-        $get_copies_query = "SELECT Booktitle, Author FROM shelves INNER JOIN bookscopy USING (Copyid) INNER JOIN books using (Bookid) WHERE shelves.Groupnumber = $group_number AND Shelfid = $shelf_id";
-        $books_result = mysqli_query($db_connection, $get_shelves_query);
-        while($row = mysqli_fetch_assoc($result)) {
-            array_push($this->books, new BookCopy($row['Booktitle'], $row['Author']));
+        $get_copies_query = "SELECT Bookid, Booktitle, Author FROM shelves INNER JOIN bookscopy USING (Copyid) INNER JOIN books using (Bookid) WHERE shelves.Groupnumber = $group_number AND Shelfid = $shelf_id";
+        $books_result = mysqli_query($db_connection, $get_copies_query);
+        while($row = mysqli_fetch_assoc($books_result)) {
+            array_push($this->books, new BookCopy($row['Bookid'], $row['Booktitle'], $row['Author']));
         }
     }
 

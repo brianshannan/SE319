@@ -60,11 +60,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $db_name   = "db319all";
         $db_connection = mysqli_connect($db_server, $db_username, $db_password, $db_name);
 
-        $query = "INSERT INTO users (Groupnumber, Username, Password, Email, Phone, Librarian, Firstname, Lastname) VALUES (32, $username, $password, $email, $phone, $librarian, $first, $second)";
+        $query = "INSERT INTO users (Groupnumber, Username, Password, Email, Phone, Librarian, Firstname, Lastname) VALUES ('32', '$username', '$password', '$email', '$phone', '$librarian', '$first', '$second')";
         mysqli_query($db_connection, $query);
 
         // Redirect to login page
-        header("Location: localhost/signin.php");
+        header("Location: signin.php");
         exit;
     }
 }
