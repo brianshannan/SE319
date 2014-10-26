@@ -84,7 +84,7 @@ class Library {
         $group_number = self::GROUP_NUMBER;
         $query = "SELECT * FROM loanHistory WHERE Groupnumber = '$group_number' AND Username = '$username'";
         $result = mysqli_query($db_connection, $query);
-        $table = "<table>";
+        $table = "<table><tr><td>Username</td><td>Copy id</td><td>Due date</td><td>Returned on date</td></tr>";
 
         while($row = mysqli_fetch_assoc($result)) {
             $username = $row["Username"];
