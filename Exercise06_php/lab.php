@@ -15,7 +15,7 @@ class Library {
         $this->shelves = array();
 
         $group_number = self::GROUP_NUMBER;
-        $get_shelves_query = "SELECT Shelfid FROM shelves WHERE Groupnumber = $group_number";
+        $get_shelves_query = "SELECT DISTINCT Shelfid FROM shelves WHERE Groupnumber = $group_number";
         $result = mysqli_query($db_connection, $get_shelves_query);
         while($row = mysqli_fetch_assoc($result)) {
             array_push($this->shelves, new Shelf($row['Shelfid']));
@@ -113,7 +113,6 @@ class Library {
         $copy_id_query = "SELECT bookscopy.Copyid FROM books INNER JOIN bookscopy USING (Bookid) WHERE books.Groupnumber = '$group_number' AND books.Bookid = '$book_id' AND Copyid NOT IN (SELECT Copyid FROM loanHistory INNER JOIN bookscopy USING (Copyid) INNER JOIN books USING (Bookid) WHERE loanHistory.Groupnumber = '$group_number' AND books.Bookid = '$book_id' AND Returnedondate IS NULL) LIMIT 1";
         $copy_id_result = mysqli_query($db_connection, $copy_id_query);
         $copy_id = mysqli_fetch_assoc($copy_id_result)['Copyid'];
-        echo $copy_id;
 
         $due_date = date("Y-m-d");  // Really short borrow time
         $query = "INSERT INTO loanHistory (Groupnumber, Username, Copyid, Duedate) VALUES ('$group_number', '$username', '$copy_id', '$due_date');";
@@ -139,10 +138,11 @@ class Library {
         $table = "<table>";
 
         foreach($this->shelves as $shelf) {
-            //
+            $table = $table . $shelf->getBooks();
         }
 
         $table = $table . "</table>";
+        return $table;
     }
 }
 
@@ -168,6 +168,16 @@ class Shelf {
     public function addBook($book) {
         array_push($this->books, $book);
     }
+
+    public function getBooks() {
+        $id = $this->shelf_id;
+        $row = "<tr><td>$id</td>";
+        foreach($this->books as $book) {
+            $row = $row . $book->getDisplay();
+        }
+        $row = $row . "</tr>";
+        return $row;
+    }
 }
 
 class BookCopy {
@@ -180,6 +190,11 @@ class BookCopy {
         $this->book_id = $book_id;
         $this->book_name = $book_name;
         $this->author = $author;
+    }
+
+    public function getDisplay() {
+        $id = $this->book_id;
+        return "<td>$id</id>";
     }
 }
 

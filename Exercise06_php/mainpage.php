@@ -90,7 +90,7 @@
         echo $loan_history;
     }
 
-    if(isset($_POST["view-shelves"])) {
+    if(isset($_POST["view-shelves-submit"])) {
         $shelves = $lib->getShelves();
         echo $shelves;
     }
