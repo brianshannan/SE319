@@ -1,23 +1,75 @@
 <html>
 <head>
-  <title>Tetris</title>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="./tetris.css">
+     <meta charset="UTF-8">
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="tetris.js"></script>
+    <link rel="stylesheet" type="text/css" href="tetris.css">
 </head>
-
 <body>
-  <h1>Tetris</h1>
-  <div>
-    <canvas id="canvas" width="250" height="500"></canvas>
+<table cellspacing="0" cellpadding="0" width="100%" height="100%"><tr><td valign="middle">
+<div id="tetris">
+  <div class="left">
+    <h1>CS 319 Tetris</h1>
+    <div class="menu">
+      <div><input type="button" value="New Game" id="start" /></div>
+      <div><input type="button" value="Reset" id="reset" /></div>
+    </div>
+    <div class="keyboard">
+      <div class="up"><input type="button" value="^" id="up" /></div>
+      <div class="down"><input type="button" value="v" id="down" /></div>
+      <div class="left"><input type="button" value="<" id="left" /></div>
+      <div class="right"><input type="button" value=">" id="right" /></div>
+    </div>
+    <div id="next-piece"></div>
+    <div id="game-over">Game Over</div>
+    <div class="stats">
+      <table cellspacing="0" cellpadding="0">
+      <tr>
+        <td class="level">Level:</td>
+        <td><span id="level">1</span></td>
+      </tr>
+      <tr>
+        <td class="score">Score:</td>
+        <td><span id="score">0</span></td>
+      </tr>
+      <tr>
+        <td class="lines">Lines:</td>
+        <td><span id="lines">0</span></td>
+      </tr>
+      </table>
+    </div>
   </div>
-  <input type="button" id="restartButton" value="Restart Game" />
-  <p id="gameInProgress">Game is in progress.  You will automatically join if either player leaves.</p>
+  <div id="board"></div>
+  <div id="help" class="window">
+    <div class="top">
+      Help <span id="close" class="close">x</span>
+    </div>
+    <div class="content">
+      <b>Controllers:</b> <br />
+      up - rotate <br />
+      down - move down <br />
+      left - move left <br />
+      right - move right <br />
+      space - fall to the bottom <br />
+      n - new game <br />
+      r - reset <br />
+      <br />
+      <b>Rules:</b> <br />
+      1) Puzzle speed = 80+700/level miliseconds, the smaller value the faster puzzle falls <br />
+      2) If puzzles created in current level >= 10+level*2 then increase level <br />
+      3) After puzzle falling score is increased by 1000*level*linesRemoved <br />
+      4) Each "down" action increases score by 5+level (pressing space counts as multiple down actions)
+    </div>
+  </div>
+</div>
 
+</td></tr></table>
 
-
-<script type="text/javascript" src="./tetris.js"></script>
 <script type="text/javascript">
-var tetris = new Tetris();
+  var tetris = new Tetris();
+  tetris.unit = 14;
+  tetris.areaX = 12;
+  tetris.areaY = 22;
 </script>
 </body>
 </html>
