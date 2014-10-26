@@ -5,7 +5,7 @@
     session_start();
     $username = $_SESSION["username"];
     $librarian = $_SESSION["librarian"];
-    echo "Username: ".$username;
+    echo "Username: ".$username."<br>";
 
     include 'lab.php';
     $lib = new Library();
@@ -40,7 +40,7 @@
 <html>
 <body>
 
-<?php if(!$librarian) { ?>
+<?php if($librarian) { ?>
 
     <h3>Add Book</h3>
     <form name="add-book" action="mainpage.php" method="post">

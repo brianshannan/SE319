@@ -82,7 +82,7 @@ class Library {
         global $db_connection;
 
         $group_number = self::GROUP_NUMBER;
-        $query = "SELECT * FROM loanHistory WHERE Groupnumber = '$group_number' AND Username = $username";
+        $query = "SELECT * FROM loanHistory WHERE Groupnumber = '$group_number' AND Username = '$username'";
         $result = mysqli_query($db_connection, $query);
         $table = "<table>";
 
