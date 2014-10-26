@@ -107,8 +107,10 @@ class Library {
         $username = $_SESSION["username"];
         $group_number = self::GROUP_NUMBER;
         $copy_id_query = "SELECT Copyid FROM bookscopy WHERE Bookid = $book_id LIMIT 1;";
+        $copy_id_query = "SELECT bookscopy.Copyid FROM books INNER JOIN bookscopy USING (Bookid) WHERE books.Groupnumber = '$group_number' AND books.Bookid = '$book_id' AND Copyid NOT IN (SELECT Copyid FROM loanHistory INNER JOIN bookscopy USING (Copyid) INNER JOIN books USING (Bookid) WHERE loanHistory.Groupnumber = '$group_number' AND books.Bookid = '$book_id' AND Returnedondate IS NULL) LIMIT 1";
         $copy_id_result = mysqli_query($db_connection, $copy_id_query);
         $copy_id = mysqli_fetch_assoc($copy_id_result)['Copyid'];
+        echo $copy_id;
 
         $due_date = date("Y-m-d");  // Really short borrow time
         $query = "INSERT INTO loanHistory (Groupnumber, Username, Copyid, Duedate) VALUES ('$group_number', '$username', '$copy_id', '$due_date');";
@@ -121,8 +123,7 @@ class Library {
         $group_number = self::GROUP_NUMBER;
         $username = $_SESSION["username"];
 
-        $copy_id_query = "SELECT Copyid FROM loanHistory INNER JOIN bookscopy USING (Copyid) INNER JOIN books USING (Bookid) WHERE loanHistory.GROUP_NUMBER = '$group_number' AND Returnedondate IS NULL AND Username = '$username' AND books.Bookid = '$book_id'";
-        // $copy_id_query = "SELECT Copyid FROM bookscopy WHERE Bookid = $book_id LIMIT 1;";
+        $copy_id_query = "SELECT Copyid FROM loanHistory INNER JOIN bookscopy USING (Copyid) INNER JOIN books USING (Bookid) WHERE loanHistory.Groupnumber = '$group_number' AND Returnedondate IS NULL AND Username = '$username' AND books.Bookid = '$book_id'";
         $copy_id_result = mysqli_query($db_connection, $copy_id_query);
         $copy_id = mysqli_fetch_assoc($copy_id_result)['Copyid'];
 
