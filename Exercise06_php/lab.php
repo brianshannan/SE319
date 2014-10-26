@@ -57,17 +57,20 @@ class Library {
         $shelf->addBook($book);
     }
 
+    // ***************************************************************
+    // NOTE: THIS DOESN'T WORK BECAUSE OF THE FOREIGN KEY CONSTRAINTS IN THE DATABASE. REMOVING THOSE WILL ALLOW THIS TO WORK
+    // ***************************************************************
     public function deleteBook($book_id) {
         global $db_connection;
 
         $group_number = self::GROUP_NUMBER;
-        echo $book_id;
 
-        $remove_book_query = "DELETE FROM books WHERE Groupnumber = '$group_number' AND Bookid = '$book_id'";
-        mysqli_query($db_connection, $remove_book_query);
 
         $remove_copies_query = "DELETE FROM bookscopy WHERE Groupnumber = '$group_number' AND Bookid = '$book_id'";
         mysqli_query($db_connection, $remove_copies_query);
+
+        $remove_book_query = "DELETE FROM books WHERE Groupnumber = '$group_number' AND Bookid = '$book_id'";
+        mysqli_query($db_connection, $remove_book_query);
 
         foreach($this->shelves as $shelf) {
             foreach($shelf->books as $key => $book) {
