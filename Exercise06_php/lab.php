@@ -1,7 +1,5 @@
 <?php
 
-$username = "a username"; // TODO
-
 $db_username = "u319all";
 $db_password = "024IjLaMj4dI";
 $db_server = "mysql.cs.iastate.edu";
@@ -43,7 +41,7 @@ class Library {
                 $shelf_id = $shelf->shelf_id;
                 $copy_shelf_query = "INSERT INTO shelves (Groupnumber, Shelfid, Copyid) VALUES ('$group_number', '$shelf_id', LAST_INSERT_ID())";
                 mysqli_query($db_connection, $copy_shelf_query);
-                $book = new Book($book_id, $book_name, $author);
+                $book = new BookCopy($book_id, $book_name, $author);
                 $shelf->addBook($book);
                 return;
             }
@@ -63,6 +61,7 @@ class Library {
         global $db_connection;
 
         $group_number = self::GROUP_NUMBER;
+        echo $book_id;
 
         $remove_book_query = "DELETE FROM books WHERE Groupnumber = '$group_number' AND Bookid = '$book_id'";
         mysqli_query($db_connection, $remove_book_query);
@@ -83,7 +82,7 @@ class Library {
         global $db_connection;
 
         $group_number = self::GROUP_NUMBER;
-        $query = "SELECT * FROM loanHistory WHERE Groupnumber = '$group_number'";
+        $query = "SELECT * FROM loanHistory WHERE Groupnumber = '$group_number' AND Username = $username";
         $result = mysqli_query($db_connection, $query);
         $table = "<table>";
 
@@ -105,6 +104,7 @@ class Library {
     public function borrowBook($book_id) {
         global $db_connection;
 
+        $username = $_SESSION["username"];
         $group_number = self::GROUP_NUMBER;
         $copy_id_query = "SELECT Copyid FROM bookscopy WHERE Bookid = $book_id LIMIT 1;";
         $copy_id_result = mysqli_query($db_connection, $copy_id_query);
@@ -119,9 +119,11 @@ class Library {
         global $db_connection;
 
         $group_number = self::GROUP_NUMBER;
+        $username = $_SESSION["username"];
 
-        $copy_id_query = "SELECT Copyid FROM bookscopy WHERE Bookid = $book_id LIMIT 1;";
-        $copy_id_result = my_query($db_connection, $copy_id_query);
+        $copy_id_query = "SELECT Copyid FROM loanHistory INNER JOIN bookscopy USING (Copyid) INNER JOIN books USING (Bookid) WHERE loanHistory.GROUP_NUMBER = '$group_number' AND Returnedondate IS NULL AND Username = '$username' AND books.Bookid = '$book_id'";
+        // $copy_id_query = "SELECT Copyid FROM bookscopy WHERE Bookid = $book_id LIMIT 1;";
+        $copy_id_result = mysqli_query($db_connection, $copy_id_query);
         $copy_id = mysqli_fetch_assoc($copy_id_result)['Copyid'];
 
         $today = date("Y-m-d");
@@ -132,7 +134,9 @@ class Library {
     public function getShelves() {
         $table = "<table>";
 
-
+        foreach($this->shelves as $shelf) {
+            //
+        }
 
         $table = $table . "</table>";
     }
