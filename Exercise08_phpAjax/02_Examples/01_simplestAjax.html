@@ -1,0 +1,78 @@
+<HTML>
+<HEAD>
+</HEAD>
+
+
+<BODY>
+<input type="button" id = "button1" value="Request Button"/>
+<input type="button" id = "button2" value="Toggle Button"/>
+
+<div id="colorThis">
+The purpose of this example is to show how AJAX works.
+We are using a XMLHttpRequest object to send a GET request to the
+server. We can use an asynchronous or a synchronous method - based on
+whether we set a flag to true or false. The next exercise will be using asynchronous method.
+
+<br> <br>
+
+The below section will be populated by data from a separate request to
+the server when we click the "Request button". The server takes a while
+to respond and so for a while nothing will happen.
+You cannot do anything (like clicking the second button which will
+toggle the color of this text) until the response comes back. 
+</div>
+<br>
+The response from the server will be put below the horizontal line.
+<hr>
+<div id="myDiv"></div>
+
+
+<script>
+// SET THE CLICK HANDLERS FOR THE TWO BUTTONS
+var btn1 = document.getElementById("button1");
+var btn2 = document.getElementById("button2");
+btn1.onclick =  sendARequest;
+btn2.onclick =  toggleColor;
+
+
+
+// DEFINE TOGGLE COLOR FUNCTION
+function toggleColor() {
+
+  // SEE HOW WE ARE ABLE TO ATTACH A PROPERTY TO
+  // A FUNCTION IN JAVASCRIPT! FUNCTIONS ARE ALSO OBJECTS!
+  if (typeof toggleColor.status == "undefined") {
+    toggleColor.status = true;
+  }
+
+  var colorDiv = document.getElementById("colorThis");
+  if (toggleColor.status) {
+    colorDiv.style.color = "blue";
+    toggleColor.status = false;
+  }
+  else {
+    colorDiv.style.color = "red";
+    toggleColor.status = true;
+  }
+}
+
+// DEFINE THE SERVER REQUEST FUNCTIONALITY USING AJAX
+// ASYNCHRONOUS JAVASCRIPT XML
+function sendARequest() {
+  // 1. CREATE XHR object
+  var xhr = new XMLHttpRequest();
+
+  // 3. SET UP REQUEST
+  xhr.open("get","01_simplestAjax.php?name=COMS319", false);
+
+  // 4. SEND REQUEST
+  xhr.send(null);
+
+  // 5. WAIT FOR RESPONSE AND DO SOMETHING THEN
+  document.getElementById("myDiv").innerHTML = xhr.responseText;
+  // NOTE: really should be checking status etc...
+}
+
+</script>
+</BODY>
+</HTML>
