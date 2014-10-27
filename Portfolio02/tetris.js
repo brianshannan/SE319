@@ -7,10 +7,12 @@ function Tetris() {
     this.board = null;
 
     this.unit  = 20;
-    this.boardX = 20;
+    this.boardX = 12;
     this.boardY = 20;
 
-
+    /*
+        Initializes the game, board, and piece.
+    */
     this.start = function() {
         self.reset();
         self.stats.start();
@@ -24,6 +26,9 @@ function Tetris() {
         }
     }
 
+    /*
+        Clears the board and stats
+    */
     this.reset = function() {
         if (self.piece) {
             self.piece.destroy();
@@ -38,6 +43,9 @@ function Tetris() {
         self.stats.reset();
     }
 
+    /*
+        Ends Game and stops
+    */
     this.gameOver = function() {
         self.stats.stop();
         self.piece.stop();
@@ -45,13 +53,18 @@ function Tetris() {
         $('#next-piece').css("display","none");
     }
 
-
+    /*
+        Rotates piece if able to
+    */
     this.up = function() {
         if (self.piece && self.piece.isRunning() && !self.piece.isStopped() && self.piece.mayRotate()) {
             self.piece.rotate();
         }
     }
 
+    /*
+        Increases speed of going down and increases score
+    */
     this.down = function() {
         if (self.piece && self.piece.isRunning() && !self.piece.isStopped() && self.piece.mayMoveDown()) {
             self.stats.setScore(self.stats.getScore() + 5 + self.stats.getLevel());
@@ -59,18 +72,27 @@ function Tetris() {
         }
     }
 
+    /*
+        Moves Piece left if able to
+    */
     this.left = function() {
         if (self.piece && self.piece.isRunning() && !self.piece.isStopped() && self.piece.mayMoveLeft()) {
             self.piece.moveLeft();
         }
     }
 
+    /*
+        Moves Piece right if able to
+    */
     this.right = function() {
         if (self.piece && self.piece.isRunning() && !self.piece.isStopped() && self.piece.mayMoveRight()) {
             self.piece.moveRight();
         }
     }
 
+    /*
+        Sends piece to the bottom
+    */
     this.space = function() {
         if (self.piece && self.piece.isRunning() && !self.piece.isStopped()) {
             self.piece.stop();
@@ -78,36 +100,51 @@ function Tetris() {
         }
     }
 
+    /*
+        Calls start on click
+    */
     $('#start').click(function () {
         self.start();
-        this.blur();
     });
 
+    /*
+        Calls reset on click
+    */
     $('#reset').click(function () {
         self.reset();
-        this.blur();
     });
 
+    /*
+        Calls up on click
+    */
     $('#up').click(function () {
         self.up();
-        this.blur();
     });
 
+    /*
+        Calls down on click
+    */
     $('#down').click(function () {
         self.down();
-        this.blur();
     });
 
+    /*
+        Calls left on click
+    */
     $('#left').click(function () {
         self.left();
-        this.blur();
     });
 
+    /*
+        Calls right on click
+    */
     $('#right').click(function () {
         self.right();
-        this.blur();
     });
 
+    /*
+        Binds keyboard events to functions
+    */
     var keyboard = new Keyboard();
     keyboard.set(keyboard.n, this.start);
     keyboard.set(keyboard.r, this.reset);
@@ -150,7 +187,9 @@ function Tetris() {
         }
     }
 
-
+    /*
+        Keeps track of stats for each game
+    */
     function Stats() {
 
         this.level;
@@ -158,20 +197,17 @@ function Tetris() {
         this.score;
         this.pieces;
 
-        this.actions;
-
         this.sel = {
-            "level": $("#level"),
-            "lines": $("#lines"),
-            "score": $("#score")
+            level: $("#level"),
+            lines: $("#lines"),
+            score: $("#score")
         }
 
-        this.timerId = null;
         var self = this;
+        this.timerId = null;
 
         this.start = function() {
             this.reset();
-            this.timerId = setInterval(this.incTime, 1000);
         }
 
         this.stop = function() {
@@ -180,51 +216,75 @@ function Tetris() {
             }
         }
 
+        /*
+            Resets the stats
+        */
         this.reset = function() {
             this.stop();
             this.level = 1;
             this.lines = 0;
             this.score = 0;
             this.pieces = 0;
+
             this.sel.level.html(this.level);
             this.sel.lines.html(this.lines);
             this.sel.score.html(this.score);
         }
 
-
+        /*
+            Set Score
+        */
         this.setScore = function(i) {
             this.score = i;
             this.sel.score.html(this.score);
         }
 
+        /*
+            Set Level
+        */
         this.setLevel = function(i) {
             this.level = i;
             this.sel.level.html(this.level);
-        }
-
-        this.setLines = function(i) {
-            this.lines = i;
-            this.el.lines.html(this.lines);
         }
 
         this.setPieces = function(i) {
             this.pieces = i;
         }
 
+        /*
+            Set Lines
+        */
+        this.setLines = function(i) {
+            this.lines = i;
+            this.sel.lines.html(this.lines);
+        }
+
+        /*
+            Get Score
+        */
         this.getScore = function() {
             return this.score;
         }
 
+        /*
+            Get Level
+        */
         this.getLevel = function() {
             return this.level;
         }
 
-        this.getLines = function() {
-            return this.lines;
-        }
-
+        /*
+            Get Pieces
+        */
         this.getPieces = function() {
             return this.pieces;
+        }
+
+        /*
+            Get Lines
+        */
+        this.getLines = function() {
+            return this.lines;
         }
     }
 
@@ -237,6 +297,7 @@ function Tetris() {
 
         this.board = [];
 
+        // instantiates board with 0's
         for (var y = 0; y < this.y; y++) {
             this.board.push(new Array());
             for (var x = 0; x < this.x; x++) {
@@ -244,17 +305,19 @@ function Tetris() {
             }
         }
 
+        // clears board of pieces, and sets 0's
         this.destroy = function() {
             for (var y = 0; y < this.board.length; y++) {
                 for (var x = 0; x < this.board[y].length; x++) {
                     if (this.board[y][x]) {
-                        this.sel.remove(this.board[y][x]);
                         this.board[y][x] = 0;
                     }
                 }
             }
+            this.sel.empty();
         }
 
+        // Checks if a line is full, if so remove it
         this.removeFullLines = function() {
             var lines = 0;
             for (var y = this.y - 1; y > 0; y--) {
@@ -267,6 +330,7 @@ function Tetris() {
             return lines;
         }
 
+        // Checks if a line is full
         this.isLineFull = function(y) {
             for (var x = 0; x < this.x; x++) {
                 if (!this.board[y][x]) {
@@ -276,9 +340,10 @@ function Tetris() {
             return true;
         }
 
+        // Clear full line and moves lines down
         this.removeLine = function(y) {
             for (var x = 0; x < this.x; x++) {
-                this.sel.remove(this.board[y][x]);
+                this.board[y][x].empty();
                 this.board[y][x] = 0;
             }
             y--;
@@ -295,23 +360,27 @@ function Tetris() {
             }
         }
 
+        // Returns a block if block exists or a 0 if not
         this.getBlock = function(y, x) {
             if (y < 0) {
                 return 0;
             }
             if (y < this.y && x < this.x) {
                 return this.board[y][x];
-            } else {
-                console.log("Board.getBlock("+y+", "+x+") failed");
             }
         }
 
+        // Adds a block of a Piece to the board
         this.addElement = function(sel) {
-            var offset = sel.offset();
-            var x = parseInt(offset.left / this.unit);
-            var y = parseInt(offset.top / this.unit);
-            if (y >= 0 && y < this.y && x >= 0 && x < this.x) {
-                this.board[y][x] = sel;
+            var y = sel.css("top");
+            var x = sel.css("left");
+            y = parseInt(y.replace("px", "") / this.unit);
+            x = parseInt(x.replace("px", "") / this.unit);
+            console.log(x, y);
+            if (y >= 0 && y-2 < this.y && x >= 0 && x < this.x) {
+                this.board[y-2][x] = sel;
+            }else{
+                console.log("failed");
             }
         }
     }
@@ -376,6 +445,9 @@ function Tetris() {
             ]
         ];
 
+        /*
+            Reset the Current Piece
+        */
         this.reset = function() {
             if (this.fallDownID) {
                 clearTimeout(this.fallDownID);
@@ -391,9 +463,6 @@ function Tetris() {
             this.stopped = false;
             this.boardElements = [];
             this.elements = [];
-            for (var i = 0; i < this.nextElements.length; i++) {
-                $("#nextpiece").remove(this.nextElements[i]);
-            }
             this.nextElements = [];
             this.x = null;
             this.y = null;
@@ -418,6 +487,9 @@ function Tetris() {
             return this.y;
         }
 
+        /*
+            Check if piece is able to get render
+        */
         this.mayPlace = function() {
             var piece = this.pieces[this.type];
             var boardStartX = parseInt((this.board.x - piece[0].length) / 2);
@@ -443,6 +515,9 @@ function Tetris() {
             return true;
         }
 
+        /*
+            render piece onto the board and show the next piece
+        */
         this.place = function() {
             this.tetris.stats.setPieces(this.tetris.stats.getPieces() + 1);
             if (this.tetris.stats.getPieces() >= (10 + this.tetris.stats.getLevel() * 2)) {
@@ -496,15 +571,19 @@ function Tetris() {
             }
         }
 
+        /*
+            clear piece
+        */
         this.destroy = function() {
-            for (var i = 0; i < this.elements.length; i++) {
-                this.board.sel.remove(this.elements[i]);
-            }
+            this.board.sel.empty();
             this.elements = [];
             this.boardElements = [];
             this.reset();
         }
 
+        /*
+            Instantiate new clear piece
+        */
         this.createEmptyPiece = function(y, x) {
             var piece = [];
             for (var y2 = 0; y2 < y; y2++) {
@@ -516,6 +595,9 @@ function Tetris() {
             return piece;
         }
 
+        /*
+            When piece is falling, check if it collides, end game if cant create new piece
+        */
         this.fallDown = function() {
             if (self.isRunning()) {
                 if (self.mayMoveDown()) {
@@ -525,13 +607,11 @@ function Tetris() {
                     for (var i = 0; i < self.elements.length; i++) {
                         self.board.addElement(self.elements[i]);
                     }
-                    // stats
                     var lines = self.board.removeFullLines();
                     if (lines) {
                         self.tetris.stats.setLines(self.tetris.stats.getLines() + lines);
                         self.tetris.stats.setScore(self.tetris.stats.getScore() + (1000 * self.tetris.stats.getLevel() * lines));
                     }
-                    // reset piece
                     self.reset();
                     if (self.mayPlace()) {
                         self.place();
@@ -542,25 +622,24 @@ function Tetris() {
             }
         }
 
+        /*
+            When piece is falling, check if it collides, end game if cant create new piece
+        */
         this.forceMoveDown = function() {
             if (!self.isRunning() && !self.isStopped()) {
                 if (self.mayMoveDown()) {
-                    // stats: score, actions
                     self.tetris.stats.setScore(self.tetris.stats.getScore() + 5 + self.tetris.stats.getLevel());
                     self.moveDown();
                     self.forceMoveDownID = setTimeout(self.forceMoveDown, 30);
                 } else {
-                    // move blocks into board board
                     for (var i = 0; i < self.elements.length; i++) {
                         self.board.addElement(self.elements[i]);
                     }
-                    // stats: lines
                     var lines = self.board.removeFullLines();
                     if (lines) {
                         self.tetris.stats.setLines(self.tetris.stats.getLines() + lines);
                         self.tetris.stats.setScore(self.tetris.stats.getScore() + (1000 * self.tetris.stats.getLevel() * lines));
                     }
-                    // reset piece
                     self.reset();
                     if (self.mayPlace()) {
                         self.place();
@@ -570,10 +649,12 @@ function Tetris() {
                 }
             }
         }
+
         this.stop = function() {
             this.running = false;
         }
 
+        // Checks if piece can rotate
         this.mayRotate = function() {
             for (var y = 0; y < this.boardElements.length; y++) {
                 for (var x = 0; x < this.boardElements[y].length; x++) {
@@ -589,6 +670,7 @@ function Tetris() {
             return true;
         }
 
+        // Rotates piece
         this.rotate = function() {
             var piece = this.createEmptyPiece(this.boardElements.length, this.boardElements[0].length);
             for (var y = 0; y < this.boardElements.length; y++) {
@@ -611,11 +693,12 @@ function Tetris() {
             this.boardElements = piece;
         }
 
+        //Checks if can move down
         this.mayMoveDown = function() {
             for (var y = 0; y < this.boardElements.length; y++) {
                 for (var x = 0; x < this.boardElements[y].length; x++) {
                     if (this.boardElements[y][x]) {
-                        if (this.getY() + y + 1 >= this.board.y || this.board.getBlock(this.getY() + y + 1, this.getX() + x)) {
+                        if (this.getY() + y - 1  >= this.board.y || this.board.getBlock(this.getY(), this.getX())) {
                             this.stopped = true;
                             return false;
                         }
@@ -625,6 +708,7 @@ function Tetris() {
             return true;
         }
 
+        //Moves down
         this.moveDown = function() {
             for (var i = 0; i < this.elements.length; i++) {
                 var offset = this.elements[i].offset();
@@ -633,11 +717,12 @@ function Tetris() {
             this.y++;
         }
 
+        //Checks if can move left
         this.mayMoveLeft = function() {
             for (var y = 0; y < this.boardElements.length; y++) {
                 for (var x = 0; x < this.boardElements[y].length; x++) {
                     if (this.boardElements[y][x]) {
-                        if (this.getX() + x - 1 < 0 || this.board.getBlock(this.getY() + y, this.getX() + x - 1)) {
+                        if (this.getX() + x - 1 < 0 || this.board.getBlock(this.getY() + y, this.getX() + x + 1)) {
                             return false;
                         }
                     }
@@ -646,6 +731,7 @@ function Tetris() {
             return true;
         }
 
+        // Moves left
         this.moveLeft = function() {
             for (var i = 0; i < this.elements.length; i++) {
                 var offset = this.elements[i].offset();
@@ -654,11 +740,12 @@ function Tetris() {
             this.x--;
         }
 
+        //Checks if can move right
         this.mayMoveRight = function() {
             for (var y = 0; y < this.boardElements.length; y++) {
                 for (var x = 0; x < this.boardElements[y].length; x++) {
                     if (this.boardElements[y][x]) {
-                        if (this.getX() + x + 1 >= this.board.x || this.board.getBlock(this.getY() + y, this.getX() + x + 1)) {
+                        if (this.getX() + x + 1 >= this.board.x || this.board.getBlock(this.getY() + y, this.getX() + x - 1)) {
                             return false;
                         }
                     }
@@ -667,6 +754,7 @@ function Tetris() {
             return true;
         }
 
+        // Moves right
         this.moveRight = function() {
             for (var i = 0; i < this.elements.length; i++) {
                 var offset = this.elements[i].offset();
@@ -676,34 +764,8 @@ function Tetris() {
         }
     }
 
+    // Random
     function random(i) {
         return Math.floor(Math.random() * i);
     }
-
-
-}
-
-if (!String.prototype.trim) {
-    String.prototype.trim = function() {
-        return this.replace(/^\s*|\s*$/g, "");
-    };
-}
-
-if (!Array.prototype.removeByIndex) {
-    Array.prototype.removeByIndex = function(index) {
-        this.splice(index, 1);
-    };
-}
-
-if (!String.prototype.format) {
-    String.prototype.format = function() {
-        if (!arguments.length) { throw "String.format() failed, no arguments passed, this = "+this; }
-        var tokens = this.split("?");
-        if (arguments.length != (tokens.length - 1)) { throw "String.format() failed, tokens != arguments, this = "+this; }
-        var s = tokens[0];
-        for (var i = 0; i < arguments.length; ++i) {
-            s += (arguments[i] + tokens[i + 1]);
-        }
-        return s;
-    };
 }
