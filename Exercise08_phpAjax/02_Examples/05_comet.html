@@ -1,0 +1,100 @@
+
+<HTML>
+<HEAD>
+</HEAD>
+<BODY>
+<input type="button" id = "button1" value="Request Button"/>
+<input type="button" id = "button2" value="Toggle Button"/>
+<div id="colorThis">
+The purpose of this example is to show one way to have SERVER send
+data to client when it wants.
+There are many ways to do this and the word COMET is used to refer to
+them.
+<BR>
+One way is to have client poll the server frequently - to see if the
+server wants to send some information. This is called short polling.
+<BR>
+Another way is to have client send a request to server and then keep the
+connection open - until the server has some info to send back. That's a
+normal http response. Then the client makes another request. This is
+called long polling.
+<BR>
+Another way, used by this example, is called streaming. Here the server
+sends back a multi-part response. Each part can be sent back when the
+server is ready to send. 
+<BR>
+Web Sockets, which allow bi-directional communication between client and
+server, is slowly replacing need for COMET techniques.
+<br><br>
+NOTE THAT ALL BROWSERS DO NOT BEHAVE CORRECTLY. FIREFOX works ok.
+The below section will be populated by data from a separate request to
+the server when we click the button. The server sends several chunks of
+data one after the other.
+In the meantime, clicking the second button will toggle the color of this text.
+</div>
+<br>
+The response from the server will be put below the horizontal line.
+<hr>
+<div id="myDiv"></div>
+
+
+<script>
+var btn1 = document.getElementById("button1");
+var btn2 = document.getElementById("button2");
+
+btn1.onclick =  sendARequest;
+btn2.onclick =  toggleColor;
+
+
+function toggleColor() {
+  if (typeof toggleColor.status == "undefined") {
+    toggleColor.status = true;
+  }
+
+  if (toggleColor.status) {
+    var colorDiv = document.getElementById("colorThis");
+    colorDiv.style.color = "blue";
+    toggleColor.status = false;
+  }
+  else {
+    var colorDiv = document.getElementById("colorThis");
+    colorDiv.style.color = "red";
+    toggleColor.status = true;
+  }
+}
+
+function sendARequest() {
+  // 1. CREATE XHR object
+  var xhr = new XMLHttpRequest();
+  //xhr.multipart = true;
+
+  // 2. SET UP CALLBACKS
+  xhr.onreadystatechange = function() {
+    //alert(JSON.stringify(xhr));
+
+    // READY STATE == 3 MEANS THAT SOME RESPONSE CAME BACK
+    // NOTE THAT THE ENTIRE RESPONSE RECEIVED SO FAR IS IN responseText
+    if(xhr.readyState == 3) {
+      document.getElementById("myDiv").innerHTML =  xhr.responseText;
+    }
+
+    // READY STATE == 4 MEANS THAT ALL RESPONSE HAS COME BACK
+    // NOTE THAT THE ENTIRE RESPONSE IS IN XHR.
+    else if (xhr.readyState == 4) {
+      document.getElementById("myDiv").innerHTML =  xhr.responseText;
+    }
+  };
+
+  // 3. SET UP REQUEST
+  // THIS IS A LONG RUNNING PHP FILE
+  xhr.open("get","05_comet.php",true); 
+
+  // 4. SEND REQUEST
+  xhr.send(null);
+}
+
+</script>
+
+
+</BODY>
+</HTML>

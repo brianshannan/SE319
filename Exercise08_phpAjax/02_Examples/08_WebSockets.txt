@@ -1,0 +1,29 @@
+08_Websockets
+-----------------------------------------------------------------
+
+Source: https://github.com/lemmingzshadow/php-websocket
+
+I downloaded this and changed the name to phpwebsocket.
+
+Step 1: Unzip the file in the htdocs folder of XAMPP.
+
+Step 2: run the server
+  cd phpwebsocket
+  cd server
+  type php server.php on the command line and run it.
+
+Step 3: open phpwebsocket/client/index.html in browser (via local server)
+        open phpwebsocket/client/status.html in another tab
+
+If the websocket worked - the green connection button will be on.
+Else, it will show "disconnected".
+
+Step 4: Now, open phpwebsocket/client/ourIndex.html via local server
+Step 5: Also, open it using a text editor. See the few commands to
+create and use WebSockets on the client side.
+
+For server side code, see server/lib/WebSocket/* codes.
+Simanta
+
+
+
