@@ -1,0 +1,76 @@
+
+<HTML>
+<HEAD>
+</HEAD>
+<BODY>
+<input type="button" id = "button1" value="Request Button"/>
+<input type="button" id = "button2" value="Toggle Button"/>
+<div id="colorThis">
+The purpose of this example is to show how AJAX works.
+This time we will show the asynchronous behavior.
+<br><br>
+The below section will be populated by data from a separate request to
+the server when we click the "Request button". The server takes a while to respond
+and so for a while the response section will be blank. However, this
+time the page will be responsive and you can click on the second button
+to toggle the color of the text while you wait for the response.
+</div>
+<br>
+The response from the server will be put below the horizontal line.
+<hr>
+<div id="myDiv"></div>
+
+
+<script>
+
+// SET UP THE CLICK HANDERS FOR THE BUTTONS
+var btn1 = document.getElementById("button1");
+var btn2 = document.getElementById("button2");
+btn1.onclick =  sendARequest;
+btn2.onclick =  toggleColor;
+
+
+// DEFINE FUNCTION TOGGLE COLOR
+function toggleColor() {
+  if (typeof toggleColor.status == "undefined") {
+    toggleColor.status = true;
+  }
+
+  if (toggleColor.status) {
+    var colorDiv = document.getElementById("colorThis");
+    colorDiv.style.color = "blue";
+    toggleColor.status = false;
+  }
+  else {
+    var colorDiv = document.getElementById("colorThis");
+    colorDiv.style.color = "red";
+    toggleColor.status = true;
+  }
+}
+
+
+// SET UP THE SERVER REQUEST USING AJAX
+function sendARequest() {
+  // 1. CREATE XHR object
+  var xhr = new XMLHttpRequest();
+
+  // 2. SET UP CALLBACKS
+  // THIS IS CALLED WHEN THE readystatechange event is fired
+  xhr.onreadystatechange = function() {
+    document.getElementById("myDiv").innerHTML =  xhr.responseText;
+    // should really be doing error checking!
+  };
+
+  // 3. SET UP REQUEST
+  xhr.open("get","01_simplestAjax.php?name=COMS319",true); // change
+
+  // 4. SEND REQUEST
+  xhr.send(null);
+  // WE DO NOT WAIT FOR RESULTS
+}
+
+</script>
+
+
+</BODY>
+</HTML>

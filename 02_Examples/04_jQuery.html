@@ -1,0 +1,67 @@
+
+<HTML>
+<HEAD>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</HEAD>
+<BODY>
+<input type="button" id = "button1" value="Request Button"/>
+<input type="button" id = "button2" value="Toggle Button"/>
+<div id="colorThis">
+The purpose of this example is to show how AJAX works.
+However, this time we will use jQuery!
+<br><br>
+The below section will be populated by data from a separate request to
+the server when we click the button. The server takes a while to respond
+and so for a while nothing will happen but you can do other things (like
+clicking the second button which will toggle the color of this text).
+</div>
+<br>
+The response from the server will be put below the horizontal line.
+<hr>
+<div id="myDiv"></div>
+
+
+<script>
+// SET UP THE CLICK HANDLERS
+var btn1 = document.getElementById("button1");
+var btn2 = document.getElementById("button2");
+btn1.onclick = sendARequest;
+btn2.onclick = toggleColor;
+
+// DEFINE TOGGLECOLOR
+function toggleColor() {
+  if (typeof toggleColor.status == "undefined") {
+    toggleColor.status = true;
+  }
+
+  if (toggleColor.status) {
+    var colorDiv = document.getElementById("colorThis");
+    colorDiv.style.color = "blue";
+    toggleColor.status = false;
+  }
+  else {
+    var colorDiv = document.getElementById("colorThis");
+    colorDiv.style.color = "red";
+    toggleColor.status = true;
+  }
+}
+
+// USE JQUERY - IS THAT SIMPLE OR WHAT?
+function sendARequest() {
+ $.get("01_simplestAjax.php?name=Timothy",callBack);
+ // TODO: COMMENT ABOVE LINE AND UNCOMMENT BELOW TO SEE POST WORKING
+ //$.post("01_simplestAjax.php", "name=Timothy", callBack);
+}
+
+
+function callBack(data, status) {
+   $("#myDiv").html(data);
+}
+
+// FYI - there is also xhr.abort() to abort requests 
+
+</script>
+
+
+</BODY>
+</HTML>

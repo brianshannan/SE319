@@ -1,0 +1,24 @@
+
+<HTML>
+<HEAD>
+</HEAD>
+<BODY>
+The purpose of this example is to show how the BROWSER sends a
+multi-part request to the SERVER.
+<br> We have a FORM that uses multipart/form-data encoding.
+We are able to send MULTIPLE files in one request. These files can be of
+different types (word/excel/text/pdf/image etc).
+<br>
+Do check that the response obtained from 06_display.php does indeed 
+show that two files were received by the server (from the browser).
+<br> <br>
+
+<form method="post" action="06_display.php" enctype="multipart/form-data">
+<input type="file" name="file1" value="select file1"/> <br>
+<input type="file" name="file2" value="select file2"/> <br>
+<input type="file" name="file3" value="select file3"/> <br>
+<input type="submit" name="submit" value="click to Submit"/> <br>
+</form>
+
+</BODY>
+</HTML>
