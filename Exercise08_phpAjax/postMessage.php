@@ -4,8 +4,6 @@
     $message = $_POST['message'];
     $posttime = date("Y-m-d H:i:s");
 
-    echo "$username $message $posttime";
-
     $db_username = "u319all";
     $db_password = "024IjLaMj4dI";
     $db_host = "mysql.cs.iastate.edu";
