@@ -22,7 +22,7 @@
         mysqli_query($db_connection, $insert_follower);
     }
 
-    header("Location: home.php");
+    header("Location: home.html");
     exit;
 
 ?>

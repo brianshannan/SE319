@@ -9,6 +9,8 @@ $db_host = "mysql.cs.iastate.edu";
 $db_name = "db319all";
 $db_connection = mysqli_connect($db_host, $db_username, $db_password, $db_name);
 
+
+header('Content-Type: application/json');
 while(true) {
     $get_following_query = "SELECT username FROM followers WHERE followername = '$username'";
     $following_result = mysqli_query($db_connection, $get_following_query);
@@ -19,10 +21,10 @@ while(true) {
         array_push($following_list, $row);
     }
 
-    header('Content-Type: application/json');
     echo json_encode($following_list);
 
     ob_flush();
     flush();
+    sleep(5);
 }
 ?>

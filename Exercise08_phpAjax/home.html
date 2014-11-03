@@ -3,13 +3,15 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     </head>
     <body>
-        <h3>Welcome</h3>
-        <div style="border-style: solid; border-width: 2px; height: 600px; width: 200px; float: left; margin-right: 5px;">
+        <h3 id="header">Welcome</h3>
+        <div style=" height: 600px; width: 200px; float: left; margin-right: 5px;">
             <h4 style="text-align: center;">Following</h4>
+            <ul id="following"><ul>
         </div>
 
-        <div style="border-style: solid; border-width: 2px; height: 600px; width: 200px; float: left; margin-right: 5px;">
+        <div style="width: 200px; float: left; margin-right: 5px;">
             <h4 style="text-align: center;">Followers</h4>
+            <ul id="followers"></ul>
         </div>
         <div style="margin-left: 5px; float: left;">
             <h4>Post Text: </h4>
@@ -20,53 +22,88 @@
             </form>
         </div>
 
-        <div style="border-style: solid; border-width: 2px; height: 600px; width: 450px; float: left; text-align: center; margin-left: 5px;">
+        <div style="width: 450px; float: left; text-align: center; margin-left: 5px;">
             <h4>Messages</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Poster</th>
+                        <th>Message</th>
+                        <th>Datetime</th>
+                    </tr>
+                </thead>
+                <tbody id="messages">
+                </tbody>
+            </table>
         </div>
     <script type="text/javascript">
-        $.getJSON("getUsername.php", function() {
-            // Do stuff
+        $(document).ready(function() {
+            getUsername();
+            makeCometRequest("getFollowing.php", getFollowing);
+            makeCometRequest("getFollowers.php", getFollowers);
+            makeCometRequest("getMessages.php", getMessages);
         });
 
-        function makeCometRequest(php_file, elem_id) {
-            // 1. CREATE XHR object
+
+        function makeCometRequest(php_file, cb) {
             var xhr = new XMLHttpRequest();
-            //xhr.multipart = true;
-
-            // 2. SET UP CALLBACKS
-            xhr.onreadystatechange = function() {
-                console.log(xhr);
-
-                // // READY STATE == 3 MEANS THAT SOME RESPONSE CAME BACK
-                // // NOTE THAT THE ENTIRE RESPONSE RECEIVED SO FAR IS IN responseText
-                // if(xhr.readyState == 3) {
-                //     document.getElementById("elem_id").innerHTML =  xhr.responseText;
-                // }
-                //
-                // // READY STATE == 4 MEANS THAT ALL RESPONSE HAS COME BACK
-                // // NOTE THAT THE ENTIRE RESPONSE IS IN XHR.
-                // else if (xhr.readyState == 4) {
-                //     document.getElementById("elem_id").innerHTML =  xhr.responseText;
-                // }
-            };
-
-            // 3. SET UP REQUEST
-            // THIS IS A LONG RUNNING PHP FILE
             xhr.open("get", php_file, true);
-
-            // 4. SEND REQUEST
+            xhr.setRequestHeader("Accept","application/json");
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 3) {
+                    cb(xhr.responseText);
+                }
+            };
             xhr.send(null);
         }
-        makeCometRequest("getMessages.php", "crap");
-        makeCometRequest("getFollowing.php", "crap");
-        makeCometRequest("getFollower.php", "crap");
+
+        var getMessages = function (messages) {
+            console.log(messages);
+            messages = JSON.parse(messages);
+            $('#messages').empty();
+            var rows = [];
+            messages.forEach(function(message){
+                var row = $('<tr><th>' + message.username +'</th><th>' + message.msg + '</th><th>' + message.posttime + '</th></tr>');
+                rows.push(row);
+            });
+            $('#messages').append(rows);
+        };
+
+        var getFollowing = function(following) {
+            following = JSON.parse(following);
+            $('#following').empty();
+            var followingArray = [];
+            following.forEach(function(user){
+                var li = $('<li><li>').text(following);
+                followingArray.push(li);
+            });
+            $('#following').append(followingArray);
+        };
+
+        var getFollowers = function(followers) {
+            console.log(followers);
+            followers = JSON.parse(followers);
+            $('#followers').empty();
+            var followerArray = [];
+            followers.forEach(function(user){
+                console.log(user);
+                var li = $('<li><li>').text(user.followername);
+                followerArray.push(li);
+            });
+            $('#followers').append(followerArray);
+        };
+
+        var getUsername = function () {
+            $.getJSON("getUsername.php", function(username) {
+                var tmpText = $('#header').text();
+                $('#header').text(tmpText + " " + username + "!");
+            });
+        };
 
         $('#post-message').submit(function (event) {
             event.preventDefault();
             var text = $('#post-message-text').val();
-            $.post('postMessage.php', {"message": text}, function(){
-                console.log();
-            });
+            $.post('postMessage.php', {"message": text});
         });
     </script>
     </body>
