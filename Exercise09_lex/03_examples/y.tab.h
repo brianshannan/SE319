@@ -1,0 +1,14 @@
+#define NUMBER 0
+#define TOKHEAT 1
+#define STATE 2
+#define TOKTARGET 3
+#define TOKTEMPERATURE 4
+#define SEMICOLON 5
+#define OBRACE 6 
+#define EBRACE 7
+#define QUOTE 8
+#define WORD 9
+#define FILENAME 10 
+#define ZONETOK 11
+#define FILETOK 12 
+#define TOKHEATER 13
