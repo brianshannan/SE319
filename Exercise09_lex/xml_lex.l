@@ -21,12 +21,13 @@ text                            {data}+
 
 xml_dec_open                    <\?xml
 xml_dec_close                   \?>
-xml_dec_attr_data               [^ <>\'\"]
+xml_dec_attr_data               [^ <>\'\"?]
 xml_dec_attr                    {name}={xml_dec_attr_data}+
 
 %x elem_dec
 %x data
 %x elem_close
+%x xml_dec
 
 %%
 
@@ -38,9 +39,9 @@ xml_dec_attr                    {name}={xml_dec_attr_data}+
 <data>{text}                        return TEXT;
 <data><\/                           return ELEM_CLOSE;
 <elem_close>{name}                  return ELEM_CLOSE_NAME;
-{xml_dec_open}                      return XML_DEC_OPEN;
-{xml_dec_close}                     return XML_DEC_CLOSE;
-{xml_dec_attr}                      return XML_DEC_ATTR;
+<*>{xml_dec_open}                   return XML_DEC_OPEN;
+<xml_dec>{xml_dec_attr}             return XML_DEC_ATTR;
+<xml_dec>{xml_dec_close}            return XML_DEC_CLOSE;
 
 .                                   |
 {nl}                                ;
@@ -53,7 +54,7 @@ int main() {
         switch(token) {
             case ELEM_START:
                 printf("starting element\n");
-                BEGIN(elem_dec);
+                BEGIN elem_dec;
                 break;
             case ELEM_NAME_NON_EMPTY:
                 printf("non-empty element: %s\n", yytext);
@@ -65,7 +66,6 @@ int main() {
                 printf("attribute: %s\n", yytext);
                 break;
             case ELEM_END:
-                BEGIN 0;
                 BEGIN data;
                 printf("ending element\n");
                 break;
@@ -73,7 +73,6 @@ int main() {
                 printf("text: %s\n", yytext);
                 break;
             case ELEM_CLOSE:
-                BEGIN 0;
                 BEGIN elem_close;
                 break;
             case ELEM_CLOSE_NAME:
@@ -82,9 +81,11 @@ int main() {
 
             case XML_DEC_OPEN:
                 printf("xml declaration open\n");
+                BEGIN xml_dec;
                 break;
             case XML_DEC_CLOSE:
                 printf("xml declaration close\n");
+                BEGIN 0;
                 break;
             case XML_DEC_ATTR:
                 printf("xml declaration attribute %s\n", yytext);
