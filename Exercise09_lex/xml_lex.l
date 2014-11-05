@@ -1,27 +1,74 @@
 %{
 
 #include <stdio.h>
+#include "y.tab.h"
 
 %}
 
 ws                  [ \t]
-name_start          [a-zA-Z]
-name_char           [a-zA-Z0-9]
+nl                  (\r|\n|\r\n)
+quot                [\'\"]
+name_start          [a-zA-Z_]
+name_char           [a-zA-Z0-9_.:]
 name                {name_start}{name_char}*
-data                .
-attr                ({ws}{name}=\"{data}*\")
-empty_elem          <{name}{attr}*\/>
-open_elem           <{name}{attr}*>
+data                [^<>\'\"]
+attr                {name}={quot}{data}*{quot}
 close_elem          <\/{name}>
+elem_start          <{name}
+empty               \/>
+text                >{nl}?{ws}*{data}+{nl}?{ws}*
+
+xml_dec_open        <\?xml
+xml_dec_close       \?>
+xml_dec_attr_data   [^ <>\'\"]
+xml_dec_attr        {name}={xml_dec_attr_data}+
 
 %%
 
-{empty_elem}        printf("empty_elem: %s", yytext);
+{elem_start}        return ELEM_START;
+{attr}              return ATTR;
+{empty}             return ELEM_EMPTY;
+{close_elem}        return ELEM_CLOSE;
+{text}              return TEXT;
+{xml_dec_open}      return XML_DEC_OPEN;
+{xml_dec_close}     return XML_DEC_CLOSE;
+{xml_dec_attr}      return XML_DEC_ATTR;
+
+.                   |
+{nl}                ;
 
 %%
 
 int main() {
-    yylex();
+    while(yywrap()) {
+        int token = yylex();
+        switch(token) {
+            case ELEM_START:
+                printf("starting element %s\n", yytext);
+                break;
+            case ELEM_EMPTY:
+                printf("empty element\n");
+                break;
+            case ELEM_CLOSE:
+                printf("closing element %s\n", yytext);
+                break;
+            case ATTR:
+                printf("attribute %s\n", yytext);
+                break;
+            case TEXT:
+                printf("text %s\n", yytext);
+                break;
+            case XML_DEC_OPEN:
+                printf("xml declaration open\n");
+                break;
+            case XML_DEC_CLOSE:
+                printf("xml declaration close\n");
+                break;
+            case XML_DEC_ATTR:
+                printf("xml declaration attribute %s\n", yytext);
+                break;
+        }
+    }
 }
 
 int yywrap() {

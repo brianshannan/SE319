@@ -13,3 +13,8 @@ hs_err_pid*
 
 .settings/*
 /bin/
+
+lex.yy.c
+xml_exec
+run
+
