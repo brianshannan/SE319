@@ -17,8 +17,7 @@ name_char                       [a-zA-Z0-9_.:]
 name                            {name_start}{name_char}*
 data                            [^<>&]
 attr                            {name}={quot}{data}*{quot}
-close_elem                      <\/{name}>
-text                            >{data}+
+text                            {data}+
 
 xml_dec_open                    <\?xml
 xml_dec_close                   \?>
@@ -68,6 +67,7 @@ int main() {
             case ELEM_END:
                 BEGIN 0;
                 BEGIN data;
+                printf("ending element\n");
                 break;
             case TEXT:
                 printf("text: %s\n", yytext);
