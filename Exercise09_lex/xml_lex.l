@@ -9,37 +9,35 @@
 
 %}
 
-ws                  [ \t]
-nl                  (\r|\n|\r\n)
-quot                [\'\"]
-name_start          [a-zA-Z_]
-name_char           [a-zA-Z0-9_.:]
-name                {name_start}{name_char}*
-data                [^<>\'\"]
-attr                {name}={quot}{data}*{quot}
-close_elem          <\/{name}>
-elem_start          <{name}
-empty               \/>
-text                >{nl}?{ws}*{data}+{nl}?{ws}*
+ws                              [ \t]
+nl                              (\r|\n|\r\n)
+quot                            [\'\"]
+name_start                      [a-zA-Z_]
+name_char                       [a-zA-Z0-9_.:]
+name                            {name_start}{name_char}*
+data                            [^<>\'\"]
+attr                            {name}={quot}{data}*{quot}
+close_elem                      <\/{name}>
+text                            >{nl}?{ws}*{data}+{nl}?{ws}*
 
-xml_dec_open        <\?xml
-xml_dec_close       \?>
-xml_dec_attr_data   [^ <>\'\"]
-xml_dec_attr        {name}={xml_dec_attr_data}+
+xml_dec_open                    <\?xml
+xml_dec_close                   \?>
+xml_dec_attr_data               [^ <>\'\"]
+xml_dec_attr                    {name}={xml_dec_attr_data}+
 
 %%
 
-{elem_start}        return ELEM_START;
-{attr}              return ATTR;
-{empty}             return ELEM_EMPTY;
-{close_elem}        return ELEM_CLOSE;
-{text}              return TEXT;
-{xml_dec_open}      return XML_DEC_OPEN;
-{xml_dec_close}     return XML_DEC_CLOSE;
-{xml_dec_attr}      return XML_DEC_ATTR;
+\<{name}/({ws}{attr})*>         return ELEM_START;
+{attr}                          return ATTR;
+\<{name}/({ws}{attr})*\/>       return ELEM_EMPTY;
+{close_elem}                    return ELEM_CLOSE;
+{text}                          return TEXT;
+{xml_dec_open}                  return XML_DEC_OPEN;
+{xml_dec_close}                 return XML_DEC_CLOSE;
+{xml_dec_attr}                  return XML_DEC_ATTR;
 
-.                   |
-{nl}                ;
+.                               |
+{nl}                            ;
 
 %%
 
@@ -51,7 +49,7 @@ int main() {
                 printf("starting element %s\n", yytext);
                 break;
             case ELEM_EMPTY:
-                printf("empty element\n");
+                printf("empty element %s\n", yytext);
                 break;
             case ELEM_CLOSE:
                 printf("closing element %s\n", yytext);
