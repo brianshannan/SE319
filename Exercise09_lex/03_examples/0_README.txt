@@ -7,8 +7,8 @@ lex <<filename.l>>   // replace <<filename.l>> with your file name
 
 A lex.yy.c file will be generated.
 
-2) Compile the lexical analyzer 
-cc lex.yy.c -o <<MYRUNFILE>> // replace <<MYRUNFILE>>> 
+2) Compile the lexical analyzer
+cc lex.yy.c -o <<MYRUNFILE>> // replace <<MYRUNFILE>>>
 
 
 Now, you can run the analyzer by typing

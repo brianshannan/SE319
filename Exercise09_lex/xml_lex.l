@@ -1,18 +1,29 @@
 %{
-    #include <stdio.h>
 
-    int stack[100];
-    int stack_pos = 0;
+#include <stdio.h>
+
 %}
 
-ELEM_END <\/[a-zA-Z][a-zA-Z0-9]*>
-
+ws                  [ \t]
+name_start          [a-zA-Z]
+name_char           [a-zA-Z0-9]
+name                {name_start}{name_char}*
+data                .
+attr                ({ws}{name}=\"{data}*\")
+empty_elem          <{name}{attr}*\/>
+open_elem           <{name}{attr}*>
+close_elem          <\/{name}>
 
 %%
 
-{ELEM_END} printf("end");
+{empty_elem}        printf("empty_elem: %s", yytext);
 
 %%
 
-int yywrap(){ return 1;}
-int main(){ yylex(); }
+int main() {
+    yylex();
+}
+
+int yywrap() {
+    return 1;
+}

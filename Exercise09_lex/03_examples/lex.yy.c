@@ -360,8 +360,8 @@ static void yy_fatal_error (yyconst char msg[]  );
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 1
-#define YY_END_OF_BUFFER 2
+#define YY_NUM_RULES 8
+#define YY_END_OF_BUFFER 9
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -369,26 +369,29 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static yyconst flex_int16_t yy_accept[6] =
+static yyconst flex_int16_t yy_accept[34] =
     {   0,
-        0,    0,    2,    1,    0
+        0,    0,    9,    8,    7,    6,    1,    8,    8,    8,
+        7,    1,    0,    0,    3,    0,    0,    0,    0,    0,
+        2,    0,    0,    0,    0,    4,    0,    0,    0,    0,
+        0,    5,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
     {   0,
+        1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    2,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    4,    4,    4,
+        4,    4,    4,    4,    4,    4,    4,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    5,    1,    1,    1,
 
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        6,    7,    8,    9,    1,    1,    1,    1,   10,   11,
+       12,   13,    1,   14,    1,   15,   16,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -406,29 +409,46 @@ static yyconst flex_int32_t yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst flex_int32_t yy_meta[2] =
+static yyconst flex_int32_t yy_meta[17] =
     {   0,
-        1
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1
     } ;
 
-static yyconst flex_int16_t yy_base[7] =
+static yyconst flex_int16_t yy_base[35] =
     {   0,
-        0,    0,    2,    3,    3,    0
+        0,   14,   41,   42,   38,   42,   35,   32,    0,    0,
+       35,   32,   30,   27,   42,   19,   22,   16,   22,   15,
+       42,   21,   19,    9,    8,   42,   16,    5,    3,    0,
+        2,   42,   42,    0
     } ;
 
-static yyconst flex_int16_t yy_def[7] =
+static yyconst flex_int16_t yy_def[35] =
     {   0,
-        6,    6,    5,    5,    0,    5
+       34,   34,   33,   33,   33,   33,   33,   33,   33,   33,
+       33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+       33,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+       33,   33,    0,   33
     } ;
 
-static yyconst flex_int16_t yy_nxt[5] =
+static yyconst flex_int16_t yy_nxt[59] =
     {   0,
-        4,    5,    3,    5
+        4,    5,    6,    7,   16,   17,   14,   32,    8,   33,
+       15,    9,   33,   31,   10,    5,    6,    7,   30,   29,
+       28,   27,    8,   26,   25,    9,   24,   23,   10,   22,
+       21,   20,   19,   15,   18,   12,   11,   13,   12,   11,
+       33,    3,   33,   33,   33,   33,   33,   33,   33,   33,
+       33,   33,   33,   33,   33,   33,   33,   33
     } ;
 
-static yyconst flex_int16_t yy_chk[5] =
+static yyconst flex_int16_t yy_chk[59] =
     {   0,
-        6,    3,    5,    5
+       34,    1,    1,    1,   10,   10,    9,   31,    1,    0,
+        9,    1,    0,   30,    1,    2,    2,    2,   29,   28,
+       27,   25,    2,   24,   23,    2,   22,   20,    2,   19,
+       18,   17,   16,   14,   13,   12,   11,    8,    7,    5,
+        3,   33,   33,   33,   33,   33,   33,   33,   33,   33,
+       33,   33,   33,   33,   33,   33,   33,   33
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -445,18 +465,19 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "01_empty.l"
-/* There are THREE sections in any lex file.
-** The first is the declaration section.
-** The second is the rules section. A %% separates the top two sections.
-** The third is user subroutines section. A %% separates the bottom two
-** sections.
-** Here is a minimal lex file. It has basically all sections empty.
-** By default, it will just print whatever is input to it.
-**
+#line 1 "06_tokens.l"
+/*
+** This shows how a typical parser may use the analyzer.
+** Here we extend what the analyzer does. Not only does it return the 
+** TOKEN TYPE (like NUMBER, STATE etc), it also returns a token value
+** which is printed in main
 **
 */
-#line 460 "lex.yy.c"
+#line 9 "06_tokens.l"
+#include <stdio.h>
+#include "y.tab.h"
+int yylval;
+#line 481 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -638,10 +659,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 12 "01_empty.l"
+#line 13 "06_tokens.l"
 
-
-#line 645 "lex.yy.c"
+#line 665 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -694,13 +714,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 6 )
+				if ( yy_current_state >= 34 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 3 );
+		while ( yy_base[yy_current_state] != 42 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -726,10 +746,46 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 14 "01_empty.l"
+#line 14 "06_tokens.l"
+yylval=atoi(yytext); return NUMBER;
+	YY_BREAK
+case 2:
+YY_RULE_SETUP
+#line 15 "06_tokens.l"
+return TOKHEAT;
+	YY_BREAK
+case 3:
+YY_RULE_SETUP
+#line 16 "06_tokens.l"
+yylval=!strcmp(yytext,"on"); return STATE;
+	YY_BREAK
+case 4:
+YY_RULE_SETUP
+#line 17 "06_tokens.l"
+return TOKTARGET;
+	YY_BREAK
+case 5:
+YY_RULE_SETUP
+#line 18 "06_tokens.l"
+return TOKTEMPERATURE;
+	YY_BREAK
+case 6:
+/* rule 6 can match eol */
+YY_RULE_SETUP
+#line 19 "06_tokens.l"
+/* ignore end of line */;
+	YY_BREAK
+case 7:
+YY_RULE_SETUP
+#line 20 "06_tokens.l"
+/* ignore whitespace */;
+	YY_BREAK
+case 8:
+YY_RULE_SETUP
+#line 21 "06_tokens.l"
 ECHO;
 	YY_BREAK
-#line 733 "lex.yy.c"
+#line 789 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1021,7 +1077,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 6 )
+			if ( yy_current_state >= 34 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
@@ -1049,11 +1105,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 6 )
+		if ( yy_current_state >= 34 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
-	yy_is_jam = (yy_current_state == 5);
+	yy_is_jam = (yy_current_state == 33);
 
 	return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1726,11 +1782,15 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 14 "01_empty.l"
+#line 21 "06_tokens.l"
 
 
-
-/* These are needed to allow compilation on the pyrite machines */ 
-int yywrap(){ return 1;}
-int main(){ yylex(); }
+int yywrap(){
+return 1;}
+int main(){ 
+ while(yywrap()) { 
+   int state = yylex();
+   printf("TOKEN TYPE is %d, TOKEN VALUE is %s\n", state, yytext);
+ }
+}
 
