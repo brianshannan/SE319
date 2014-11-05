@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include "y.tab.h"
 
+// TODO
+//      Format print stuff so it looks right/better
+//      Detect tag that wasn't closed
+
 %}
 
 ws                  [ \t]
