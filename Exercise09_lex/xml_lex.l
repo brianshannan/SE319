@@ -25,19 +25,26 @@ xml_dec_close                   \?>
 xml_dec_attr_data               [^ <>\'\"]
 xml_dec_attr                    {name}={xml_dec_attr_data}+
 
+%x elem_dec
+%x data
+%x elem_close
+
 %%
 
-\<{name}/({ws}{attr})*>         return ELEM_START;
-{attr}                          return ATTR;
-\<{name}/({ws}{attr})*\/>       return ELEM_EMPTY;
-{close_elem}                    return ELEM_CLOSE;
-{text}                          return TEXT;
-{xml_dec_open}                  return XML_DEC_OPEN;
-{xml_dec_close}                 return XML_DEC_CLOSE;
-{xml_dec_attr}                  return XML_DEC_ATTR;
+<*><                                return ELEM_START;
+<elem_dec>{name}/({ws}{attr})*>     return ELEM_NAME_NON_EMPTY;
+<elem_dec>{name}/({ws}{attr})*\/>   return ELEM_NAME_EMPTY;
+<elem_dec>{attr}                    return ATTR;
+<elem_dec,elem_close>>              return ELEM_END;
+<data>{text}                        return TEXT;
+<data><\/                           return ELEM_CLOSE;
+<elem_close>{name}                  return ELEM_CLOSE_NAME;
+{xml_dec_open}                      return XML_DEC_OPEN;
+{xml_dec_close}                     return XML_DEC_CLOSE;
+{xml_dec_attr}                      return XML_DEC_ATTR;
 
-.                               |
-{nl}                            ;
+.                                   |
+{nl}                                ;
 
 %%
 
@@ -46,20 +53,33 @@ int main() {
         int token = yylex();
         switch(token) {
             case ELEM_START:
-                printf("starting element %s\n", yytext);
+                printf("starting element\n");
+                BEGIN(elem_dec);
                 break;
-            case ELEM_EMPTY:
-                printf("empty element %s\n", yytext);
+            case ELEM_NAME_NON_EMPTY:
+                printf("non-empty element: %s\n", yytext);
                 break;
-            case ELEM_CLOSE:
-                printf("closing element %s\n", yytext);
+            case ELEM_NAME_EMPTY:
+                printf("empty element: %s\n", yytext);
                 break;
             case ATTR:
-                printf("attribute %s\n", yytext);
+                printf("attribute: %s\n", yytext);
+                break;
+            case ELEM_END:
+                BEGIN 0;
+                BEGIN data;
                 break;
             case TEXT:
-                printf("text %s\n", yytext);
+                printf("text: %s\n", yytext);
                 break;
+            case ELEM_CLOSE:
+                BEGIN 0;
+                BEGIN elem_close;
+                break;
+            case ELEM_CLOSE_NAME:
+                printf("closing element: %s\n", yytext);
+                break;
+
             case XML_DEC_OPEN:
                 printf("xml declaration open\n");
                 break;
