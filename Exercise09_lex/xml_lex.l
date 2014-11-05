@@ -15,7 +15,7 @@ quot                            [\'\"]
 name_start                      [a-zA-Z_]
 name_char                       [a-zA-Z0-9_.:]
 name                            {name_start}{name_char}*
-data                            [^<>\'\"]
+data                            [^<>&]
 attr                            {name}={quot}{data}*{quot}
 close_elem                      <\/{name}>
 text                            >{nl}?{ws}*{data}+{nl}?{ws}*
