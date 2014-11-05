@@ -18,7 +18,7 @@ name                            {name_start}{name_char}*
 data                            [^<>&]
 attr                            {name}={quot}{data}*{quot}
 close_elem                      <\/{name}>
-text                            >{nl}?{ws}*{data}+{nl}?{ws}*
+text                            >{data}+
 
 xml_dec_open                    <\?xml
 xml_dec_close                   \?>
