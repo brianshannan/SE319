@@ -107,13 +107,14 @@ int main(int argc, char** argv) {
     }
 
     char *fileName = argv[1];
+    printf("%s", fileName);
     yyin = fopen(fileName, "r");
     if (!yyin) {
         printf("File not found");
         exit(1);
     } else {
-        while(!feof(yyin)) {
-            int token = yylex();
+        int token;
+        while((token = yylex()) != 0) {
             applyFilter(token);
         }
     }
