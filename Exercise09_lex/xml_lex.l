@@ -3,9 +3,10 @@
 #include <stdio.h>
 #include "y.tab.h"
 
+extern int yylex();
+extern FILE *yyin;
 // TODO
 //      Format print stuff so it looks right/better
-//      Detect tag that wasn't closed
 
 %}
 
@@ -48,52 +49,73 @@ xml_dec_attr                    {name}={xml_dec_attr_data}+
 
 %%
 
-int main() {
-    while(yywrap()) {
-        int token = yylex();
-        switch(token) {
-            case ELEM_START:
-                printf("starting element\n");
-                BEGIN elem_dec;
-                break;
-            case ELEM_NAME_NON_EMPTY:
-                printf("non-empty element: %s\n", yytext);
-                break;
-            case ELEM_NAME_EMPTY:
-                printf("empty element: %s\n", yytext);
-                break;
-            case ATTR:
-                printf("attribute: %s\n", yytext);
-                break;
-            case ELEM_END:
-                BEGIN data;
-                printf("ending element\n");
-                break;
-            case TEXT:
-                printf("text: %s\n", yytext);
-                break;
-            case ELEM_CLOSE:
-                BEGIN elem_close;
-                break;
-            case ELEM_CLOSE_NAME:
-                printf("closing element: %s\n", yytext);
-                break;
-
-            case XML_DEC_OPEN:
-                printf("xml declaration open\n");
-                BEGIN xml_dec;
-                break;
-            case XML_DEC_CLOSE:
-                printf("xml declaration close\n");
-                BEGIN 0;
-                break;
-            case XML_DEC_ATTR:
-                printf("xml declaration attribute %s\n", yytext);
-                break;
-        }
+void applyFilter (int token) {
+    char currentOpen[100];
+    switch(token) {
+        case ELEM_START:
+            printf("starting element\n");
+            BEGIN elem_dec;
+            break;
+        case ELEM_NAME_NON_EMPTY:
+            strcpy(currentOpen, yytext);
+            printf("non-empty element: %s\n", yytext);
+            break;
+        case ELEM_NAME_EMPTY:
+            printf("empty element: %s\n", yytext);
+            break;
+        case ATTR:
+            printf("attribute: %s\n", yytext);
+            break;
+        case ELEM_END:
+            BEGIN data;
+            printf("ending element\n");
+            break;
+        case TEXT:
+            printf("text: %s\n", yytext);
+            break;
+        case ELEM_CLOSE:
+            BEGIN elem_close;
+            break;
+        case ELEM_CLOSE_NAME:
+            if (strcmp(currentOpen,yytext) != 0){
+                printf("%s is not properly closed!!!\n", currentOpen);
+            }
+            printf("closing element: %s\n", yytext);
+            break;
+        case XML_DEC_OPEN:
+            printf("xml declaration open\n");
+            BEGIN xml_dec;
+            break;
+        case XML_DEC_CLOSE:
+            printf("xml declaration close\n");
+            BEGIN 0;
+            break;
+        case XML_DEC_ATTR:
+            printf("xml declaration attribute: %s\n", yytext);
+            break;
     }
 }
 
-int yywrap() {
+int yywrap(){
     return 1;
+}
+
+int main(int argc, char** argv) {
+    if (argc != 2) {
+        printf("Usage: %s filename\n", argv[0]);
+        exit(1);
+    }
+
+    char *fileName = argv[1];
+    yyin = fopen(fileName, "r");
+    if (!yyin) {
+        printf("File not found");
+        exit(1);
+    } else {
+        while(!feof(yyin)) {
+            int token = yylex();
+            applyFilter(token);
+        }
+    }
+    return 0;
 }
