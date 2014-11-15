@@ -1,7 +1,7 @@
 /**
  * Another expression parser. In this case, it parses LOGICAL
  * expressions such as (abc && def).
- * Do note what syntax errors happen for the given input in 
+ * Do note what syntax errors happen for the given input in
  * SimpleBoolean.in
  */
 grammar SimpleBoolean;
@@ -13,13 +13,13 @@ RPAREN : ')' ;
 AND : '&&';
 OR : '||';
 NOT : '!';
-NAME : ('a'..'z' | '0'..'9')+; 
+NAME : ('a'..'z' | '0'..'9')+;
 WS : ( ' ' | '\t' | '\r' | '\n' )+   {skip();};
 
 // PARSER RULES
 
 //start rule
-start : (andexpression ';')+ ;
+start : (andexpression ';' '\n')+ ;
 andexpression : orexpression (AND orexpression)*;
 orexpression : notexpression (OR notexpression)*;
 notexpression : NOT atom | atom;

@@ -9,17 +9,17 @@
  *
  */
 grammar Count;
- 	 
+
 @members {
  	int count = 0;
 }
- 	 
+
 // PARSE RULE
 start
  	@after {System.out.println("Total ints Count is " + count);}
- 	 : INT {count++; }  ( ',' INT    {count++;} )*
+ 	 : INT {count++; }  ( ',' INT '\n'?   {count++;} )*
  	 ;
- 	 
+
 // LEXER RULE
 INT : [0-9]+ ;
-WS : [ \r\t\n]+ {skip();} ; 
+WS : [ \r\t\n]+ {skip();} ;
