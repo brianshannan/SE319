@@ -55,7 +55,8 @@ public class RPNParser extends Parser {
 	    }
 
 	    public void pushBoolToStack(String val) {
-	        if(val == "true") {
+	        if(val.equals("true")) {
+	            System.out.println("HEREERERERERER");
 	            stack.push(true);
 	        } else {
 	            stack.push(false);

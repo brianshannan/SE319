@@ -42,7 +42,8 @@ public class RPNLexer extends Lexer {
 	    }
 
 	    public void pushBoolToStack(String val) {
-	        if(val == "true") {
+	        if(val.equals("true")) {
+	            System.out.println("HEREERERERERER");
 	            stack.push(true);
 	        } else {
 	            stack.push(false);
@@ -189,6 +190,7 @@ public class RPNLexer extends Lexer {
 	public void action(RuleContext _localctx, int ruleIndex, int actionIndex) {
 		switch (ruleIndex) {
 		case 0: INT_action((RuleContext)_localctx, actionIndex); break;
+		case 1: BOOL_action((RuleContext)_localctx, actionIndex); break;
 		case 3: BOOL_UN_OP_action((RuleContext)_localctx, actionIndex); break;
 		case 4: INT_BIN_OP_action((RuleContext)_localctx, actionIndex); break;
 		case 5: BOOL_BIN_OP_action((RuleContext)_localctx, actionIndex); break;
@@ -197,7 +199,7 @@ public class RPNLexer extends Lexer {
 	}
 	private void INT_BIN_OP_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
-		case 2: applyIntBinaryOperation(getText()); break;
+		case 3: applyIntBinaryOperation(getText()); break;
 		}
 	}
 	private void INT_action(RuleContext _localctx, int actionIndex) {
@@ -207,41 +209,46 @@ public class RPNLexer extends Lexer {
 	}
 	private void BOOL_BIN_OP_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
-		case 3: applyBoolBinaryOperation(getText()); break;
+		case 4: applyBoolBinaryOperation(getText()); break;
 		}
 	}
 	private void END_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
-		case 4: System.out.println(stack.pop()); stack.clear(); break;
+		case 5: System.out.println(stack.pop()); stack.clear(); break;
 		}
 	}
 	private void BOOL_UN_OP_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
-		case 1: applyBoolUnaryOperation(getText()); break;
+		case 2: applyBoolUnaryOperation(getText()); break;
+		}
+	}
+	private void BOOL_action(RuleContext _localctx, int actionIndex) {
+		switch (actionIndex) {
+		case 1: pushBoolToStack(getText()); break;
 		}
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\2\tF\b\1\4\2\t\2\4"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\2\tH\b\1\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\3\2\6\2\23\n\2\r\2\16\2"+
-		"\24\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\"\n\3\3\4\6\4%\n\4"+
-		"\r\4\16\4&\3\4\3\4\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6"+
-		"\5\68\n\6\3\6\3\6\3\7\3\7\3\7\3\7\5\7@\n\7\3\7\3\7\3\b\3\b\3\b\2\2\t\3"+
-		"\3\5\4\7\5\t\6\13\7\r\b\17\t\3\2\5\3\2\62;\5\2\13\f\17\17\"\"\7\2\'\'"+
-		",-//\61\61>>N\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2\2\t\3\2\2\2\2\13\3\2"+
-		"\2\2\2\r\3\2\2\2\2\17\3\2\2\2\3\22\3\2\2\2\5!\3\2\2\2\7$\3\2\2\2\t*\3"+
-		"\2\2\2\13\67\3\2\2\2\r?\3\2\2\2\17C\3\2\2\2\21\23\t\2\2\2\22\21\3\2\2"+
-		"\2\23\24\3\2\2\2\24\22\3\2\2\2\24\25\3\2\2\2\25\26\3\2\2\2\26\27\b\2\2"+
-		"\2\27\4\3\2\2\2\30\31\7v\2\2\31\32\7t\2\2\32\33\7w\2\2\33\"\7g\2\2\34"+
-		"\35\7h\2\2\35\36\7c\2\2\36\37\7n\2\2\37 \7u\2\2 \"\7g\2\2!\30\3\2\2\2"+
-		"!\34\3\2\2\2\"\6\3\2\2\2#%\t\3\2\2$#\3\2\2\2%&\3\2\2\2&$\3\2\2\2&\'\3"+
-		"\2\2\2\'(\3\2\2\2()\b\4\3\2)\b\3\2\2\2*+\7#\2\2+,\b\5\4\2,\n\3\2\2\2-"+
-		"8\t\4\2\2./\7>\2\2/8\7?\2\2\60\61\7?\2\2\618\7?\2\2\62\63\7#\2\2\638\7"+
-		"?\2\2\64\65\7@\2\2\658\7?\2\2\668\7@\2\2\67-\3\2\2\2\67.\3\2\2\2\67\60"+
-		"\3\2\2\2\67\62\3\2\2\2\67\64\3\2\2\2\67\66\3\2\2\289\3\2\2\29:\b\6\5\2"+
-		":\f\3\2\2\2;<\7(\2\2<@\7(\2\2=>\7~\2\2>@\7~\2\2?;\3\2\2\2?=\3\2\2\2@A"+
-		"\3\2\2\2AB\b\7\6\2B\16\3\2\2\2CD\7=\2\2DE\b\b\7\2E\20\3\2\2\2\b\2\24!"+
-		"&\67?\b\3\2\2\b\2\2\3\5\3\3\6\4\3\7\5\3\b\6";
+		"\24\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\"\n\3\3\3\3\3\3\4"+
+		"\6\4\'\n\4\r\4\16\4(\3\4\3\4\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3"+
+		"\6\3\6\3\6\5\6:\n\6\3\6\3\6\3\7\3\7\3\7\3\7\5\7B\n\7\3\7\3\7\3\b\3\b\3"+
+		"\b\2\2\t\3\3\5\4\7\5\t\6\13\7\r\b\17\t\3\2\5\3\2\62;\5\2\13\f\17\17\""+
+		"\"\7\2\'\',-//\61\61>>P\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2\2\t\3\2\2"+
+		"\2\2\13\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2\3\22\3\2\2\2\5!\3\2\2\2\7&\3"+
+		"\2\2\2\t,\3\2\2\2\139\3\2\2\2\rA\3\2\2\2\17E\3\2\2\2\21\23\t\2\2\2\22"+
+		"\21\3\2\2\2\23\24\3\2\2\2\24\22\3\2\2\2\24\25\3\2\2\2\25\26\3\2\2\2\26"+
+		"\27\b\2\2\2\27\4\3\2\2\2\30\31\7v\2\2\31\32\7t\2\2\32\33\7w\2\2\33\"\7"+
+		"g\2\2\34\35\7h\2\2\35\36\7c\2\2\36\37\7n\2\2\37 \7u\2\2 \"\7g\2\2!\30"+
+		"\3\2\2\2!\34\3\2\2\2\"#\3\2\2\2#$\b\3\3\2$\6\3\2\2\2%\'\t\3\2\2&%\3\2"+
+		"\2\2\'(\3\2\2\2(&\3\2\2\2()\3\2\2\2)*\3\2\2\2*+\b\4\4\2+\b\3\2\2\2,-\7"+
+		"#\2\2-.\b\5\5\2.\n\3\2\2\2/:\t\4\2\2\60\61\7>\2\2\61:\7?\2\2\62\63\7?"+
+		"\2\2\63:\7?\2\2\64\65\7#\2\2\65:\7?\2\2\66\67\7@\2\2\67:\7?\2\28:\7@\2"+
+		"\29/\3\2\2\29\60\3\2\2\29\62\3\2\2\29\64\3\2\2\29\66\3\2\2\298\3\2\2\2"+
+		":;\3\2\2\2;<\b\6\6\2<\f\3\2\2\2=>\7(\2\2>B\7(\2\2?@\7~\2\2@B\7~\2\2A="+
+		"\3\2\2\2A?\3\2\2\2BC\3\2\2\2CD\b\7\7\2D\16\3\2\2\2EF\7=\2\2FG\b\b\b\2"+
+		"G\20\3\2\2\2\b\2\24!(9A\t\3\2\2\3\3\3\b\2\2\3\5\4\3\6\5\3\7\6\3\b\7";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

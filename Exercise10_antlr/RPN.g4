@@ -14,7 +14,7 @@ grammar RPN;
     }
 
     public void pushBoolToStack(String val) {
-        if(val == "true") {
+        if(val.equals("true")) {
             stack.push(true);
         } else {
             stack.push(false);
@@ -136,7 +136,7 @@ grammar RPN;
 
 // Lexer rules
 INT             : [0-9]+                    {pushIntToStack(getText());};
-BOOL            : ('true'|'false');
+BOOL            : ('true'|'false')          {pushBoolToStack(getText());};
 WS              : [ \r\t\n]+ -> skip;
 BOOL_UN_OP      : '!'                       {applyBoolUnaryOperation(getText());};
 INT_BIN_OP      : ('+'|'-'|'*'|'/'|'%'|'<'|'<='|'=='|'!='|'>='|'>')
