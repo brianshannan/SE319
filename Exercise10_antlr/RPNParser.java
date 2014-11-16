@@ -19,14 +19,15 @@ public class RPNParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		INT=1, BOOL=2, WS=3, UN_OP=4, BIN_OP=5, END=6;
+		INT=1, BOOL=2, WS=3, BOOL_UN_OP=4, INT_BIN_OP=5, BOOL_BIN_OP=6, END=7;
 	public static final String[] tokenNames = {
-		"<INVALID>", "INT", "BOOL", "WS", "'!'", "BIN_OP", "';'"
+		"<INVALID>", "INT", "BOOL", "WS", "'!'", "INT_BIN_OP", "BOOL_BIN_OP", 
+		"';'"
 	};
 	public static final int
-		RULE_start = 0, RULE_expr = 1, RULE_literal = 2, RULE_op = 3;
+		RULE_start = 0, RULE_expr = 1, RULE_literal = 2, RULE_op = 3, RULE_bin_op = 4;
 	public static final String[] ruleNames = {
-		"start", "expr", "literal", "op"
+		"start", "expr", "literal", "op", "bin_op"
 	};
 
 	@Override
@@ -53,21 +54,45 @@ public class RPNParser extends Parser {
 	        stack.push(Integer.parseInt(val));
 	    }
 
+	    public void pushBoolToStack(String val) {
+	        if(val == "true") {
+	            stack.push(true);
+	        } else {
+	            stack.push(false);
+	        }
+	    }
+
 	    // Apply unary operation (one argument)
 	    // Didn't realize not was the only one of these, might as well keep it generic
-	    public void applyUnaryOperation(String op) {
-	        int first = stack.pop();
+	    public void applyBoolUnaryOperation(String op) {
+	        checkNumArguments(op, 1);
+
+	        Object obj = stack.pop();
+	        checkBool(op, obj);
+
+	        boolean first = (boolean) obj;
+
 	        switch(op) {
 	            case "!":
 	                stack.push(!first);
 	                break;
+	            default:
+	                throw new IllegalArgumentException("Unrecognized operation " + op);
 	        }
 	    }
 
-	    // Apply a binary operation (two arguments) given the operation as a string using the stack
-	    public void applyBinaryOperation(String op) {
-	        int second = stack.pop();
-	        int first = stack.pop();
+	    // Apply an integer binary operation (two arguments) given the operation as a string using the stack
+	    public void applyIntBinaryOperation(String op) {
+	        checkNumArguments(op, 2);
+
+	        Object obj2 = stack.pop();
+	        checkInt(op, obj2);
+	        Object obj1 = stack.pop();
+	        checkInt(op, obj1);
+
+	        int first = (int) obj1;
+	        int second = (int) obj2;
+
 	        switch(op) {
 	            case "+":
 	                stack.push(first + second);
@@ -84,6 +109,68 @@ public class RPNParser extends Parser {
 	            case "%":
 	                stack.push(first % second);
 	                break;
+	            case "<":
+	                stack.push(first < second);
+	                break;
+	            case "<=":
+	                stack.push(first <= second);
+	                break;
+	            case "==":
+	                stack.push(first == second);
+	                break;
+	            case "!=":
+	                stack.push(first != second);
+	                break;
+	            case ">=":
+	                stack.push(first >= second);
+	                break;
+	            case ">":
+	                stack.push(first > second);
+	                break;
+	            default:
+	                throw new IllegalArgumentException("Unrecognized operation " + op);
+	        }
+	    }
+
+	    // Apply a boolean binary operation (two arguments) given the operation as a string using the Stack
+	    public void applyBoolBinaryOperation(String op) {
+	        checkNumArguments(op, 2);
+
+	        Object obj2 = stack.pop();
+	        checkBool(op, obj2);
+	        Object obj1 = stack.pop();
+	        checkBool(op, obj1);
+
+	        boolean first = (boolean) obj1;
+	        boolean second = (boolean) obj2;
+
+	        switch(op) {
+	            case "&&":
+	                stack.push(first && second);
+	                break;
+	            case "||":
+	                stack.push(first || second);
+	                break;
+	            default:
+	                throw new IllegalArgumentException("Unrecognized operation " + op);
+	        }
+	    }
+
+	    public void checkNumArguments(String op, int argsReq) {
+	        if(stack.size() < argsReq) {
+	            throw new IllegalArgumentException("Not enough arguments for operation " + op + ", expecting " + argsReq);
+	        }
+	    }
+
+	    public void checkBool(String op, Object obj) {
+	        if(!(obj instanceof Boolean)) {
+	            throw new IllegalArgumentException("Expecting a boolean for operation " + op + ", got " + obj);
+	        }
+	    }
+
+	    public void checkInt(String op, Object obj) {
+	        if(!(obj instanceof Integer)) {
+	            throw new IllegalArgumentException("Expecting an integer for operation " + op + ", got " + obj);
 	        }
 	    }
 
@@ -127,40 +214,40 @@ public class RPNParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(18); 
+			setState(20); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(12); 
+				setState(14); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				do {
 					{
 					{
-					setState(8); expr();
-					setState(10);
+					setState(10); expr();
+					setState(12);
 					_la = _input.LA(1);
 					if (_la==WS) {
 						{
-						setState(9); match(WS);
+						setState(11); match(WS);
 						}
 					}
 
 					}
 					}
-					setState(14); 
+					setState(16); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << BOOL) | (1L << UN_OP) | (1L << BIN_OP))) != 0) );
-				setState(16); match(END);
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << BOOL) | (1L << BOOL_UN_OP) | (1L << INT_BIN_OP) | (1L << BOOL_BIN_OP))) != 0) );
+				setState(18); match(END);
 				}
 				}
-				setState(20); 
+				setState(22); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << BOOL) | (1L << UN_OP) | (1L << BIN_OP))) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << BOOL) | (1L << BOOL_UN_OP) | (1L << INT_BIN_OP) | (1L << BOOL_BIN_OP))) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -199,20 +286,21 @@ public class RPNParser extends Parser {
 		ExprContext _localctx = new ExprContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_expr);
 		try {
-			setState(24);
+			setState(26);
 			switch (_input.LA(1)) {
 			case INT:
 			case BOOL:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(22); literal();
+				setState(24); literal();
 				}
 				break;
-			case UN_OP:
-			case BIN_OP:
+			case BOOL_UN_OP:
+			case INT_BIN_OP:
+			case BOOL_BIN_OP:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(23); op();
+				setState(25); op();
 				}
 				break;
 			default:
@@ -254,7 +342,7 @@ public class RPNParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(26);
+			setState(28);
 			_la = _input.LA(1);
 			if ( !(_la==INT || _la==BOOL) ) {
 			_errHandler.recoverInline(this);
@@ -274,8 +362,10 @@ public class RPNParser extends Parser {
 	}
 
 	public static class OpContext extends ParserRuleContext {
-		public TerminalNode UN_OP() { return getToken(RPNParser.UN_OP, 0); }
-		public TerminalNode BIN_OP() { return getToken(RPNParser.BIN_OP, 0); }
+		public TerminalNode BOOL_UN_OP() { return getToken(RPNParser.BOOL_UN_OP, 0); }
+		public Bin_opContext bin_op() {
+			return getRuleContext(Bin_opContext.class,0);
+		}
 		public OpContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -293,13 +383,64 @@ public class RPNParser extends Parser {
 	public final OpContext op() throws RecognitionException {
 		OpContext _localctx = new OpContext(_ctx, getState());
 		enterRule(_localctx, 6, RULE_op);
+		try {
+			setState(32);
+			switch (_input.LA(1)) {
+			case BOOL_UN_OP:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(30); match(BOOL_UN_OP);
+				}
+				break;
+			case INT_BIN_OP:
+			case BOOL_BIN_OP:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(31); bin_op();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class Bin_opContext extends ParserRuleContext {
+		public TerminalNode INT_BIN_OP() { return getToken(RPNParser.INT_BIN_OP, 0); }
+		public TerminalNode BOOL_BIN_OP() { return getToken(RPNParser.BOOL_BIN_OP, 0); }
+		public Bin_opContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_bin_op; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof RPNListener ) ((RPNListener)listener).enterBin_op(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof RPNListener ) ((RPNListener)listener).exitBin_op(this);
+		}
+	}
+
+	public final Bin_opContext bin_op() throws RecognitionException {
+		Bin_opContext _localctx = new Bin_opContext(_ctx, getState());
+		enterRule(_localctx, 8, RULE_bin_op);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(28);
+			setState(34);
 			_la = _input.LA(1);
-			if ( !(_la==UN_OP || _la==BIN_OP) ) {
+			if ( !(_la==INT_BIN_OP || _la==BOOL_BIN_OP) ) {
 			_errHandler.recoverInline(this);
 			}
 			consume();
@@ -317,16 +458,17 @@ public class RPNParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\b!\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\3\2\3\2\5\2\r\n\2\6\2\17\n\2\r\2\16\2\20\3\2\3\2\6"+
-		"\2\25\n\2\r\2\16\2\26\3\3\3\3\5\3\33\n\3\3\4\3\4\3\5\3\5\3\5\2\2\6\2\4"+
-		"\6\b\2\4\3\2\3\4\3\2\6\7 \2\24\3\2\2\2\4\32\3\2\2\2\6\34\3\2\2\2\b\36"+
-		"\3\2\2\2\n\f\5\4\3\2\13\r\7\5\2\2\f\13\3\2\2\2\f\r\3\2\2\2\r\17\3\2\2"+
-		"\2\16\n\3\2\2\2\17\20\3\2\2\2\20\16\3\2\2\2\20\21\3\2\2\2\21\22\3\2\2"+
-		"\2\22\23\7\b\2\2\23\25\3\2\2\2\24\16\3\2\2\2\25\26\3\2\2\2\26\24\3\2\2"+
-		"\2\26\27\3\2\2\2\27\3\3\2\2\2\30\33\5\6\4\2\31\33\5\b\5\2\32\30\3\2\2"+
-		"\2\32\31\3\2\2\2\33\5\3\2\2\2\34\35\t\2\2\2\35\7\3\2\2\2\36\37\t\3\2\2"+
-		"\37\t\3\2\2\2\6\f\20\26\32";
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\t\'\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\5\2\17\n\2\6\2\21\n\2\r\2\16\2\22\3"+
+		"\2\3\2\6\2\27\n\2\r\2\16\2\30\3\3\3\3\5\3\35\n\3\3\4\3\4\3\5\3\5\5\5#"+
+		"\n\5\3\6\3\6\3\6\2\2\7\2\4\6\b\n\2\4\3\2\3\4\3\2\7\b&\2\26\3\2\2\2\4\34"+
+		"\3\2\2\2\6\36\3\2\2\2\b\"\3\2\2\2\n$\3\2\2\2\f\16\5\4\3\2\r\17\7\5\2\2"+
+		"\16\r\3\2\2\2\16\17\3\2\2\2\17\21\3\2\2\2\20\f\3\2\2\2\21\22\3\2\2\2\22"+
+		"\20\3\2\2\2\22\23\3\2\2\2\23\24\3\2\2\2\24\25\7\t\2\2\25\27\3\2\2\2\26"+
+		"\20\3\2\2\2\27\30\3\2\2\2\30\26\3\2\2\2\30\31\3\2\2\2\31\3\3\2\2\2\32"+
+		"\35\5\6\4\2\33\35\5\b\5\2\34\32\3\2\2\2\34\33\3\2\2\2\35\5\3\2\2\2\36"+
+		"\37\t\2\2\2\37\7\3\2\2\2 #\7\6\2\2!#\5\n\6\2\" \3\2\2\2\"!\3\2\2\2#\t"+
+		"\3\2\2\2$%\t\3\2\2%\13\3\2\2\2\7\16\22\30\34\"";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

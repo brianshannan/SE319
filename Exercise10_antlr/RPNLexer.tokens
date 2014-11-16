@@ -1,8 +1,9 @@
+INT_BIN_OP=5
 WS=3
 INT=1
-END=6
-BIN_OP=5
-UN_OP=4
+BOOL_BIN_OP=6
+END=7
+BOOL_UN_OP=4
 BOOL=2
 '!'=4
-';'=6
+';'=7

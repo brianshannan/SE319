@@ -14,24 +14,29 @@ grammar RPN;
     }
 
     public void pushBoolToStack(String val) {
-        val == 'true' ? stack.push(true) : stack.push(false);
+        if(val == "true") {
+            stack.push(true);
+        } else {
+            stack.push(false);
+        }
     }
 
     // Apply unary operation (one argument)
     // Didn't realize not was the only one of these, might as well keep it generic
-    public void applyBooleanUnaryOperation(String op) {
+    public void applyBoolUnaryOperation(String op) {
         checkNumArguments(op, 1);
 
         Object obj = stack.pop();
-        if(!(obj instanceof Boolean)) {
-            throw new IllegalArgumentException("Expecting a boolean for operation " + op + ", got " + obj);
-        }
+        checkBool(op, obj);
 
-        bool first = (bool) obj;
+        boolean first = (boolean) obj;
+
         switch(op) {
             case "!":
                 stack.push(!first);
                 break;
+            default:
+                throw new IllegalArgumentException("Unrecognized operation " + op);
         }
     }
 
@@ -40,13 +45,15 @@ grammar RPN;
         checkNumArguments(op, 2);
 
         Object obj2 = stack.pop();
+        checkInt(op, obj2);
         Object obj1 = stack.pop();
-        if()
+        checkInt(op, obj1);
 
+        int first = (int) obj1;
+        int second = (int) obj2;
 
         switch(op) {
             case "+":
-                if(!(first instance))
                 stack.push(first + second);
                 break;
             case "-":
@@ -61,12 +68,51 @@ grammar RPN;
             case "%":
                 stack.push(first % second);
                 break;
+            case "<":
+                stack.push(first < second);
+                break;
+            case "<=":
+                stack.push(first <= second);
+                break;
+            case "==":
+                stack.push(first == second);
+                break;
+            case "!=":
+                stack.push(first != second);
+                break;
+            case ">=":
+                stack.push(first >= second);
+                break;
+            case ">":
+                stack.push(first > second);
+                break;
+            default:
+                throw new IllegalArgumentException("Unrecognized operation " + op);
         }
     }
 
     // Apply a boolean binary operation (two arguments) given the operation as a string using the Stack
     public void applyBoolBinaryOperation(String op) {
-        //
+        checkNumArguments(op, 2);
+
+        Object obj2 = stack.pop();
+        checkBool(op, obj2);
+        Object obj1 = stack.pop();
+        checkBool(op, obj1);
+
+        boolean first = (boolean) obj1;
+        boolean second = (boolean) obj2;
+
+        switch(op) {
+            case "&&":
+                stack.push(first && second);
+                break;
+            case "||":
+                stack.push(first || second);
+                break;
+            default:
+                throw new IllegalArgumentException("Unrecognized operation " + op);
+        }
     }
 
     public void checkNumArguments(String op, int argsReq) {
@@ -76,11 +122,15 @@ grammar RPN;
     }
 
     public void checkBool(String op, Object obj) {
-        // TODO
+        if(!(obj instanceof Boolean)) {
+            throw new IllegalArgumentException("Expecting a boolean for operation " + op + ", got " + obj);
+        }
     }
 
     public void checkInt(String op, Object obj) {
-        // TODO
+        if(!(obj instanceof Integer)) {
+            throw new IllegalArgumentException("Expecting an integer for operation " + op + ", got " + obj);
+        }
     }
 }
 
@@ -88,12 +138,12 @@ grammar RPN;
 INT             : [0-9]+                    {pushIntToStack(getText());};
 BOOL            : ('true'|'false');
 WS              : [ \r\t\n]+ -> skip;
-BOOL_UN_OP      : '!'                       {applyUnaryOperation(getText());};
+BOOL_UN_OP      : '!'                       {applyBoolUnaryOperation(getText());};
 INT_BIN_OP      : ('+'|'-'|'*'|'/'|'%'|'<'|'<='|'=='|'!='|'>='|'>')
                                             {applyIntBinaryOperation(getText());};
 BOOL_BIN_OP     : ('&&'|'||')
                                             {applyBoolBinaryOperation(getText());};
-END             : ';'                       {System.out.println(stack.pop());};
+END             : ';'                       {System.out.println(stack.pop()); stack.clear();};
 
 
 start
@@ -111,7 +161,7 @@ literal
     ;
 
 op
-    : UN_OP
+    : BOOL_UN_OP
     | bin_op
     ;
 

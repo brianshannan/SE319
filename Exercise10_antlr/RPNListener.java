@@ -41,6 +41,16 @@ public interface RPNListener extends ParseTreeListener {
 	 */
 	void exitExpr(@NotNull RPNParser.ExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link RPNParser#bin_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterBin_op(@NotNull RPNParser.Bin_opContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RPNParser#bin_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitBin_op(@NotNull RPNParser.Bin_opContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link RPNParser#literal}.
 	 * @param ctx the parse tree
 	 */

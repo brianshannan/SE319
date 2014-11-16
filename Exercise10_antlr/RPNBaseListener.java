@@ -55,6 +55,18 @@ public class RPNBaseListener implements RPNListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBin_op(@NotNull RPNParser.Bin_opContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBin_op(@NotNull RPNParser.Bin_opContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterLiteral(@NotNull RPNParser.LiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
