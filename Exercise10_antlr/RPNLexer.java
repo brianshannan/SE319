@@ -43,7 +43,6 @@ public class RPNLexer extends Lexer {
 
 	    public void pushBoolToStack(String val) {
 	        if(val.equals("true")) {
-	            System.out.println("HEREERERERERER");
 	            stack.push(true);
 	        } else {
 	            stack.push(false);
@@ -160,6 +159,17 @@ public class RPNLexer extends Lexer {
 	        if(!(obj instanceof Integer)) {
 	            throw new IllegalArgumentException("Expecting an integer for operation " + op + ", got " + obj);
 	        }
+	    }
+
+	    public void endExpr() {
+	        if(stack.size() < 1) {
+	            System.out.println("No data to show");
+	            return;
+	        }
+	        if(stack.size() > 1) {
+	            System.out.println("More than one result, showing the first");
+	        }
+	        System.out.println(stack.pop());
 	    }
 
 

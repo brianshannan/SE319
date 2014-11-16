@@ -132,6 +132,18 @@ grammar RPN;
             throw new IllegalArgumentException("Expecting an integer for operation " + op + ", got " + obj);
         }
     }
+
+    public void endExpr() {
+        if(stack.size() < 1) {
+            System.out.println("No data to show");
+            return;
+        }
+        if(stack.size() > 1) {
+            System.out.println("More than one result, showing the first");
+        }
+        System.out.println(stack.pop());
+        stack.clear()
+    }
 }
 
 // Lexer rules
@@ -141,11 +153,11 @@ WS              : [ \r\t\n]+ -> skip;
 BOOL_UN_OP      : '!'                       {applyBoolUnaryOperation(getText());};
 INT_BIN_OP      : ('+'|'-'|'*'|'/'|'%'|'<'|'<='|'=='|'!='|'>='|'>')
                                             {applyIntBinaryOperation(getText());};
-BOOL_BIN_OP     : ('&&'|'||')
-                                            {applyBoolBinaryOperation(getText());};
-END             : ';'                       {System.out.println(stack.pop()); stack.clear();};
+BOOL_BIN_OP     : ('&&'|'||')               {applyBoolBinaryOperation(getText());};
+END             : ';'                       {endExpr();};
 
 
+// Parser rules
 start
     : ((expr WS?)+ END)+
     ;
