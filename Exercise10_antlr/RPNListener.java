@@ -1,4 +1,7 @@
 // Generated from RPN.g4 by ANTLR 4.4
+
+    import java.util.Stack;
+
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -7,6 +10,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  * {@link RPNParser}.
  */
 public interface RPNListener extends ParseTreeListener {
+	/**
+	 * Enter a parse tree produced by {@link RPNParser#op}.
+	 * @param ctx the parse tree
+	 */
+	void enterOp(@NotNull RPNParser.OpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RPNParser#op}.
+	 * @param ctx the parse tree
+	 */
+	void exitOp(@NotNull RPNParser.OpContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link RPNParser#start}.
 	 * @param ctx the parse tree
@@ -27,4 +40,14 @@ public interface RPNListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpr(@NotNull RPNParser.ExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link RPNParser#literal}.
+	 * @param ctx the parse tree
+	 */
+	void enterLiteral(@NotNull RPNParser.LiteralContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link RPNParser#literal}.
+	 * @param ctx the parse tree
+	 */
+	void exitLiteral(@NotNull RPNParser.LiteralContext ctx);
 }
