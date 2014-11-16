@@ -170,6 +170,7 @@ public class RPNLexer extends Lexer {
 	            System.out.println("More than one result, showing the first");
 	        }
 	        System.out.println(stack.pop());
+	        stack.clear();
 	    }
 
 
@@ -224,7 +225,7 @@ public class RPNLexer extends Lexer {
 	}
 	private void END_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
-		case 5: System.out.println(stack.pop()); stack.clear(); break;
+		case 5: endExpr(); break;
 		}
 	}
 	private void BOOL_UN_OP_action(RuleContext _localctx, int actionIndex) {

@@ -142,7 +142,7 @@ grammar RPN;
             System.out.println("More than one result, showing the first");
         }
         System.out.println(stack.pop());
-        stack.clear()
+        stack.clear();
     }
 }
 

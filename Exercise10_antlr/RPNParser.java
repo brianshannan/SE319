@@ -183,6 +183,7 @@ public class RPNParser extends Parser {
 	            System.out.println("More than one result, showing the first");
 	        }
 	        System.out.println(stack.pop());
+	        stack.clear();
 	    }
 
 	public RPNParser(TokenStream input) {
