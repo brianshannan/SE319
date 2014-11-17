@@ -1,0 +1,30 @@
+.header
+{
+	background-color: #AAAAAA;
+	border-bottom: thick solid #000000;
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+}
+
+.login_options
+{
+	background-color: #AAAAAA;
+	border: thick inset #000000;
+	border-radius: 10px;
+	position: absolute;
+	left: 20px;
+	top: 100px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.user_options
+{
+	position: absolute;
+	right: 20px;
+	top: 10px;
+}
