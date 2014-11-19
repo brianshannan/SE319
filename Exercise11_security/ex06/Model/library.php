@@ -53,13 +53,16 @@ class library
     	//check database for bookID
     	include("../Database/db_connect.php");
 
-		$result = mysqli_query($dbhandle, "SELECT * FROM books WHERE Groupnumber = '31' AND Bookid = '$bookID'") or die (mysql_error());
+		$result = mysqli_query($dbhandle, "SELECT * FROM books WHERE Groupnumber = '31' AND Bookid = ". (int) $bookId) or die (mysql_error());
 
     	//if this book doesn't exist, add it to database
     	if(mysqli_num_rows($result) == 0)
     	{
-    		mysqli_query($dbhandle, "INSERT INTO books (Groupnumber, Bookid, Booktitle, Author)
-    			VALUES ('31', '$bookID', '$bookTitle', '$author')");
+    		$bookIdEsc = mysqli_real_escape_string($dbhandle, $bookID);
+            $bookTitleEsc = mysqli_real_escape_string($dbhandle, $bookTitle);
+            $authorEsc = mysqli_real_escape_string($dbhandle, $author);
+            mysqli_query($dbhandle, "INSERT INTO books (Groupnumber, Bookid, Booktitle, Author)
+    			VALUES ('31', '$bookIdEsc', '$bookTitleEsc', '$authorEsc')");
     	}
 
     	//add this book to first not full shelf with incremented copyID
@@ -87,7 +90,7 @@ class library
     	//check database for bookID
     	include("../Database/db_connect.php");
 
-		$result = mysqli_query($dbhandle, "SELECT * FROM books WHERE Groupnumber = '31' AND Bookid='$bookID'") or die (mysql_error());
+		$result = mysqli_query($dbhandle, "SELECT * FROM books WHERE Groupnumber = '31' AND Bookid=". (int) $bookID) or die (mysql_error());
 
     	//if this book doesn't exist, error out
     	if(mysqli_num_rows($result) == 0)
@@ -98,12 +101,12 @@ class library
     	//if it exists get a list of copyID's
     	else
     	{
-    		$result2 = mysqli_query($dbhandle, "SELECT * from bookscopy WHERE Groupnumber = '31' AND Bookid = '$bookID'") or die (mysql_error());
+    		$result2 = mysqli_query($dbhandle, "SELECT * from bookscopy WHERE Groupnumber = '31' AND Bookid = ". (int) $bookID) or die (mysql_error());
     		$copyIDList = array();
 
     		while($row = mysqli_fetch_array($result2))
     		{
-    			$result3 = mysqli_query($dbhandle, "SELECT * FROM shelves WHERE Groupnumber = '31' AND Copyid = '$row[Copyid]'") or die (mysql_error());
+    			$result3 = mysqli_query($dbhandle, "SELECT * FROM shelves WHERE Groupnumber = '31' AND Copyid = ". (int) $row[Copyid]) or die (mysql_error());
     			$shelf_data = mysqli_fetch_array($result3);
     			$copyIDList[$shelf_data['Copyid']] = $shelf_data['Shelfid'];
     		}
@@ -117,13 +120,13 @@ class library
                     if($this->shelf[$i]->index == $shelfIDValue)
                     {
                         $this->shelf[$i]->deleteBook($copyIDKey);
-                        mysqli_query($dbhandle, "DELETE FROM loanHistory WHERE Groupnumber = '31' AND Copyid = '$copyIDKey'");
+                        mysqli_query($dbhandle, "DELETE FROM loanHistory WHERE Groupnumber = '31' AND Copyid = ". (int) $copyIDKey);
                     }
                 }
             }
 
-            mysqli_query($dbhandle, "DELETE FROM bookscopy WHERE Groupnumber = '31' AND Bookid = '$bookID'") or die (mysql_error());
-            mysqli_query($dbhandle, "DELETE FROM books WHERE Groupnumber = '31' AND Bookid = '$bookID'") or die (mysql_error());
+            mysqli_query($dbhandle, "DELETE FROM bookscopy WHERE Groupnumber = '31' AND Bookid = ". (int) $bookID) or die (mysql_error());
+            mysqli_query($dbhandle, "DELETE FROM books WHERE Groupnumber = '31' AND Bookid = ". (int) $bookID) or die (mysql_error());
     	}
 
     	include("../Database/db_close.php");

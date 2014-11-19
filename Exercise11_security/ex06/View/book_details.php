@@ -64,7 +64,7 @@
 		echo "Book ID";
 		echo "</td>";
 		echo "<td>";
-		echo $library->shelf[$book_loc['shelf']]->books[$book_loc['book']]->bookID;
+		echo htmlentities($library->shelf[$book_loc['shelf']]->books[$book_loc['book']]->bookID, ENT_QUOTES, "utf-8");
 		echo "</td>";
 
 		echo "</tr>";
@@ -75,7 +75,7 @@
 		echo "Copy ID";
 		echo "</td>";
 		echo "<td>";
-		echo $library->shelf[$book_loc['shelf']]->books[$book_loc['book']]->copyID;
+		echo htmlentities($library->shelf[$book_loc['shelf']]->books[$book_loc['book']]->copyID, ENT_QUOTES, "utf-8");
 		echo "</td>";
 
 		echo "</tr>";
@@ -86,7 +86,7 @@
 		echo "Title";
 		echo "</td>";
 		echo "<td>";
-		echo $library->shelf[$book_loc['shelf']]->books[$book_loc['book']]->title;
+		echo htmlentities($library->shelf[$book_loc['shelf']]->books[$book_loc['book']]->title, ENT_QUOTES, "utf-8");
 		echo "</td>";
 
 		echo "</tr>";
@@ -97,7 +97,7 @@
 		echo "Author";
 		echo "</td>";
 		echo "<td>";
-		echo $library->shelf[$book_loc['shelf']]->books[$book_loc['book']]->author;
+		echo htmlentities($library->shelf[$book_loc['shelf']]->books[$book_loc['book']]->author, ENT_QUOTES, "utf-8");
 		echo "</td>";
 
 		echo "</tr>";
@@ -117,7 +117,7 @@
 			if($library->shelf[$book_loc['shelf']]->books[$book_loc['book']]->isCheckedOut &&
 				$student->hasbook($library->shelf[$book_loc['shelf']]->books[$book_loc['book']]->copyID))
 			{
-				echo "<a href=\"book_details.php?shelf=".$book_loc['shelf']."&book=".$book_loc['book']."&return=1\">Return Book</a>";
+				echo "<a href=\"book_details.php?shelf=". $book_loc['shelf']."&book=".$book_loc['book'] ."&return=1\">Return Book</a>";
 			}
 			else
 			{
