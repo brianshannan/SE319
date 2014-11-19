@@ -1,0 +1,18 @@
+1/ci.php
+    "Command Execution"
+        This is a problem because this can be made to execute any command. For example, if ";ls;" is entered, the user can see all the files. This should be fixed by escaping the file argument.
+
+2/hi.php
+    "Cross Site Scripting (XSS)"
+        This is a problem because the browser will execute any given javascript when the variable is echoed to the browser. This should be fixed by escaping the output that is to be echoed.
+
+3/fe.php
+    "File Inclusion"
+        This is a problem because the "color" variable can be set by a user. This allows the user to input anything they want which will then include the corresponding php file which will then be executed, which enables anything to be executed. In this case the file should be checked against a list of valid files that are includable.
+
+4/hi.php
+    "SQL Injection"
+        This is a problem because the user can set the offset variable to whatever they want, which can be a malicious command, like ";DROP TABLE Students; --" Which would delete a "Students" table in the database. In this case the offset variable should be cast as an integer so a command like this can't be entered.
+
+
+A blank ".htaccess" file allows you to see the files and folders in a directory, putting "Options -Indexes" doesn't allow this, and instead shows a 403 error when you try to access a directory.
