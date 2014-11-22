@@ -1,0 +1,21 @@
+Server
+	set up tomcat
+	controllers
+	security stuff
+
+	xml to json
+		antlr file
+		java class to implement methods
+	
+	json to xml
+		antlr file
+		java class to implement methods
+
+Client
+	input
+	save output to file
+	display pretty printed
+		form pretty printed on server or what?
+	login?
+	
+
