@@ -17,5 +17,5 @@ content: (element | TEXT | COMMENT)*;
 element : XML_BEG_OPEN NAME attribute* XML_CLOSE content XML_END_OPEN NAME XML_CLOSE
         | XML_BEG_OPEN NAME attribute* XML_EMPTY_CLOSE;
 
-// FIX
+// name="thing"
 attribute: NAME EQUALS ATTR_DATA;
