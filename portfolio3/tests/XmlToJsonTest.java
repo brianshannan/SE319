@@ -12,7 +12,7 @@ public class XmlToJsonTest {
     public void basicFormats() {
         XmlToJson xtj;
         String[] input = new String[] {
-                "<a/>",
+                "<ab/>",
                 "<a></a>",
                 "<a>b</a>",
                 "<a b='c'/>",
