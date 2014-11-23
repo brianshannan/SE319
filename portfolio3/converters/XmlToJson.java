@@ -15,7 +15,7 @@ public class XmlToJson {
         this.parser.setBuildParseTree(true);
     }
 
-    public String convertXmlToJson(String xml) {
+    public String convertXmlToJson() {
         StartContext tree = parser.start();
 
         return null;

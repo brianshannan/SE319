@@ -1,22 +1,16 @@
 package tests;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import converters.XmlToJson;
 
 
 public class XmlToJsonTest {
-    XmlToJson xtj;
-
-    @Before
-    public void setUp() {
-        xtj = new XmlToJson();
-    }
 
     @Test
     public void basicFormats() {
+        XmlToJson xtj;
         String[] input = new String[] {
                 "<a/>",
                 "<a></a>",
@@ -42,7 +36,8 @@ public class XmlToJsonTest {
         };
 
         for(int i = 0; i < input.length; i++) {
-            Assert.assertEquals(expected[i], xtj.convertXmlToJson(input[i]));
+            xtj = new XmlToJson(input[i]);
+            Assert.assertEquals(expected[i], xtj.convertXmlToJson());
         }
     }
 }

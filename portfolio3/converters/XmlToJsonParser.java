@@ -1,5 +1,4 @@
-// Generated from XmlToJson.g4 by ANTLR 4.4
-package converters;
+// Generated from XmlToJsonParser.g4 by ANTLR 4.4
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -17,10 +16,10 @@ public class XmlToJsonParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		WS=1, TEXT=2, XML_DEC_OPEN=3, XML_DEC_CLOSE=4, XML_BEG_OPEN=5, XML_END_OPEN=6, 
-		XML_CLOSE=7, XML_EMPTY_CLOSE=8, NAME=9, ATTR_DATA=10, EQUALS=11, COMMENT=12;
+		XML_EMPTY_CLOSE=8, NAME=9, EQUALS=11, WS=1, XML_BEG_OPEN=3, XML_END_OPEN=4, 
+		XML_DEC_OPEN=2, TEXT=5, COMMENT=12, XML_DEC_CLOSE=6, ATTR_DATA=10, XML_CLOSE=7;
 	public static final String[] tokenNames = {
-		"<INVALID>", "WS", "TEXT", "'<?xml'", "'?>'", "'<'", "'</'", "'>'", "'/>'", 
+		"<INVALID>", "WS", "'<?xml'", "'<'", "'</'", "TEXT", "'?>'", "'>'", "'/>'", 
 		"NAME", "ATTR_DATA", "'='", "COMMENT"
 	};
 	public static final int
@@ -31,7 +30,7 @@ public class XmlToJsonParser extends Parser {
 	};
 
 	@Override
-	public String getGrammarFileName() { return "XmlToJson.g4"; }
+	public String getGrammarFileName() { return "XmlToJsonParser.g4"; }
 
 	@Override
 	public String[] getTokenNames() { return tokenNames; }
@@ -62,11 +61,11 @@ public class XmlToJsonParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_start; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof XmlToJsonListener ) ((XmlToJsonListener)listener).enterStart(this);
+			if ( listener instanceof XmlToJsonParserListener ) ((XmlToJsonParserListener)listener).enterStart(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof XmlToJsonListener ) ((XmlToJsonListener)listener).exitStart(this);
+			if ( listener instanceof XmlToJsonParserListener ) ((XmlToJsonParserListener)listener).exitStart(this);
 		}
 	}
 
@@ -114,11 +113,11 @@ public class XmlToJsonParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_xml_dec; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof XmlToJsonListener ) ((XmlToJsonListener)listener).enterXml_dec(this);
+			if ( listener instanceof XmlToJsonParserListener ) ((XmlToJsonParserListener)listener).enterXml_dec(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof XmlToJsonListener ) ((XmlToJsonListener)listener).exitXml_dec(this);
+			if ( listener instanceof XmlToJsonParserListener ) ((XmlToJsonParserListener)listener).exitXml_dec(this);
 		}
 	}
 
@@ -178,11 +177,11 @@ public class XmlToJsonParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_content; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof XmlToJsonListener ) ((XmlToJsonListener)listener).enterContent(this);
+			if ( listener instanceof XmlToJsonParserListener ) ((XmlToJsonParserListener)listener).enterContent(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof XmlToJsonListener ) ((XmlToJsonListener)listener).exitContent(this);
+			if ( listener instanceof XmlToJsonParserListener ) ((XmlToJsonParserListener)listener).exitContent(this);
 		}
 	}
 
@@ -196,7 +195,7 @@ public class XmlToJsonParser extends Parser {
 			setState(29);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TEXT) | (1L << XML_BEG_OPEN) | (1L << COMMENT))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << XML_BEG_OPEN) | (1L << TEXT) | (1L << COMMENT))) != 0)) {
 				{
 				setState(27);
 				switch (_input.LA(1)) {
@@ -263,11 +262,11 @@ public class XmlToJsonParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_element; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof XmlToJsonListener ) ((XmlToJsonListener)listener).enterElement(this);
+			if ( listener instanceof XmlToJsonParserListener ) ((XmlToJsonParserListener)listener).enterElement(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof XmlToJsonListener ) ((XmlToJsonListener)listener).exitElement(this);
+			if ( listener instanceof XmlToJsonParserListener ) ((XmlToJsonParserListener)listener).exitElement(this);
 		}
 	}
 
@@ -347,11 +346,11 @@ public class XmlToJsonParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_attribute; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof XmlToJsonListener ) ((XmlToJsonListener)listener).enterAttribute(this);
+			if ( listener instanceof XmlToJsonParserListener ) ((XmlToJsonParserListener)listener).enterAttribute(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof XmlToJsonListener ) ((XmlToJsonListener)listener).exitAttribute(this);
+			if ( listener instanceof XmlToJsonParserListener ) ((XmlToJsonParserListener)listener).exitAttribute(this);
 		}
 	}
 
@@ -385,13 +384,13 @@ public class XmlToJsonParser extends Parser {
 		"\n\5\f\5\16\5\67\13\5\3\5\5\5:\n\5\3\6\3\6\3\6\3\6\3\6\2\2\7\2\4\6\b\n"+
 		"\2\2B\2\r\3\2\2\2\4\21\3\2\2\2\6\37\3\2\2\2\b9\3\2\2\2\n;\3\2\2\2\f\16"+
 		"\5\4\3\2\r\f\3\2\2\2\r\16\3\2\2\2\16\17\3\2\2\2\17\20\5\6\4\2\20\3\3\2"+
-		"\2\2\21\25\7\5\2\2\22\24\5\n\6\2\23\22\3\2\2\2\24\27\3\2\2\2\25\23\3\2"+
-		"\2\2\25\26\3\2\2\2\26\30\3\2\2\2\27\25\3\2\2\2\30\31\7\6\2\2\31\5\3\2"+
-		"\2\2\32\36\5\b\5\2\33\36\7\4\2\2\34\36\7\16\2\2\35\32\3\2\2\2\35\33\3"+
+		"\2\2\21\25\7\4\2\2\22\24\5\n\6\2\23\22\3\2\2\2\24\27\3\2\2\2\25\23\3\2"+
+		"\2\2\25\26\3\2\2\2\26\30\3\2\2\2\27\25\3\2\2\2\30\31\7\b\2\2\31\5\3\2"+
+		"\2\2\32\36\5\b\5\2\33\36\7\7\2\2\34\36\7\16\2\2\35\32\3\2\2\2\35\33\3"+
 		"\2\2\2\35\34\3\2\2\2\36!\3\2\2\2\37\35\3\2\2\2\37 \3\2\2\2 \7\3\2\2\2"+
-		"!\37\3\2\2\2\"#\7\7\2\2#\'\7\13\2\2$&\5\n\6\2%$\3\2\2\2&)\3\2\2\2\'%\3"+
-		"\2\2\2\'(\3\2\2\2(*\3\2\2\2)\'\3\2\2\2*+\7\t\2\2+,\5\6\4\2,-\7\b\2\2-"+
-		".\7\13\2\2./\7\t\2\2/:\3\2\2\2\60\61\7\7\2\2\61\65\7\13\2\2\62\64\5\n"+
+		"!\37\3\2\2\2\"#\7\5\2\2#\'\7\13\2\2$&\5\n\6\2%$\3\2\2\2&)\3\2\2\2\'%\3"+
+		"\2\2\2\'(\3\2\2\2(*\3\2\2\2)\'\3\2\2\2*+\7\t\2\2+,\5\6\4\2,-\7\6\2\2-"+
+		".\7\13\2\2./\7\t\2\2/:\3\2\2\2\60\61\7\5\2\2\61\65\7\13\2\2\62\64\5\n"+
 		"\6\2\63\62\3\2\2\2\64\67\3\2\2\2\65\63\3\2\2\2\65\66\3\2\2\2\668\3\2\2"+
 		"\2\67\65\3\2\2\28:\7\n\2\29\"\3\2\2\29\60\3\2\2\2:\t\3\2\2\2;<\7\13\2"+
 		"\2<=\7\r\2\2=>\7\f\2\2>\13\3\2\2\2\t\r\25\35\37\'\659";
