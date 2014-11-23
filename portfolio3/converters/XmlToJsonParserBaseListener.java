@@ -1,4 +1,5 @@
 // Generated from XmlToJsonParser.g4 by ANTLR 4.4
+package converters;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;

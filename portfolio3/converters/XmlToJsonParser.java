@@ -1,4 +1,5 @@
 // Generated from XmlToJsonParser.g4 by ANTLR 4.4
+package converters;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -237,11 +238,9 @@ public class XmlToJsonParser extends Parser {
 	}
 
 	public static class ElementContext extends ParserRuleContext {
-		public TerminalNode XML_EMPTY_CLOSE() { return getToken(XmlToJsonParser.XML_EMPTY_CLOSE, 0); }
 		public List<AttributeContext> attribute() {
 			return getRuleContexts(AttributeContext.class);
 		}
-		public TerminalNode XML_BEG_OPEN() { return getToken(XmlToJsonParser.XML_BEG_OPEN, 0); }
 		public TerminalNode NAME(int i) {
 			return getToken(XmlToJsonParser.NAME, i);
 		}
@@ -251,12 +250,7 @@ public class XmlToJsonParser extends Parser {
 		public ContentContext content() {
 			return getRuleContext(ContentContext.class,0);
 		}
-		public List<TerminalNode> XML_CLOSE() { return getTokens(XmlToJsonParser.XML_CLOSE); }
 		public List<TerminalNode> NAME() { return getTokens(XmlToJsonParser.NAME); }
-		public TerminalNode XML_END_OPEN() { return getToken(XmlToJsonParser.XML_END_OPEN, 0); }
-		public TerminalNode XML_CLOSE(int i) {
-			return getToken(XmlToJsonParser.XML_CLOSE, i);
-		}
 		public ElementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -338,7 +332,6 @@ public class XmlToJsonParser extends Parser {
 	}
 
 	public static class AttributeContext extends ParserRuleContext {
-		public TerminalNode EQUALS() { return getToken(XmlToJsonParser.EQUALS, 0); }
 		public TerminalNode ATTR_DATA() { return getToken(XmlToJsonParser.ATTR_DATA, 0); }
 		public TerminalNode NAME() { return getToken(XmlToJsonParser.NAME, 0); }
 		public AttributeContext(ParserRuleContext parent, int invokingState) {

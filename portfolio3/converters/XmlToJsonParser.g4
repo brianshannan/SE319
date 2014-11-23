@@ -14,8 +14,8 @@ xml_dec: XML_DEC_OPEN attribute* XML_DEC_CLOSE;
 content: (element | TEXT | COMMENT)*;
 
 // <name attrs>content</name> or <name attr/>
-element : XML_BEG_OPEN NAME attribute* XML_CLOSE content XML_END_OPEN NAME XML_CLOSE
-        | XML_BEG_OPEN NAME attribute* XML_EMPTY_CLOSE;
+element : '<' NAME attribute* '>' content '</' NAME '>'
+        | '<' NAME attribute* '/>';
 
 // name="thing"
-attribute: NAME EQUALS ATTR_DATA;
+attribute: NAME '=' ATTR_DATA;
