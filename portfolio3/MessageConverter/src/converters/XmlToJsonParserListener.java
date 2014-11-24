@@ -29,6 +29,16 @@ public interface XmlToJsonParserListener extends ParseTreeListener {
 	 */
 	void exitElement(@NotNull XmlToJsonParser.ElementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link XmlToJsonParser#text}.
+	 * @param ctx the parse tree
+	 */
+	void enterText(@NotNull XmlToJsonParser.TextContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link XmlToJsonParser#text}.
+	 * @param ctx the parse tree
+	 */
+	void exitText(@NotNull XmlToJsonParser.TextContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link XmlToJsonParser#start}.
 	 * @param ctx the parse tree
 	 */
