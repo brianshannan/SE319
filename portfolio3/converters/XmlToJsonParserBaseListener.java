@@ -41,6 +41,18 @@ public class XmlToJsonParserBaseListener implements XmlToJsonParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterText(@NotNull XmlToJsonParser.TextContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitText(@NotNull XmlToJsonParser.TextContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStart(@NotNull XmlToJsonParser.StartContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -12,7 +12,9 @@ public class XmlToJsonTest {
     public void complicated() {
         XmlToJson xtj = new XmlToJson(
                 "<?xml version='1.0' ?><people one='two'><student thing='something'><name>John</name><course>Computer Technology</course><semester>6</semester><scheme>E</scheme></student><student><name>Foo</name><course>Industrial Electronics</course><semester>6</semester><scheme>E</scheme></student></people>");
-        xtj.convertXmlToJson();
+        String result = xtj.convertXmlToJson();
+        System.out.println(result);
+        System.out.println("thing");
     }
 
     @Test
