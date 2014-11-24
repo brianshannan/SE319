@@ -9,6 +9,13 @@ import converters.XmlToJson;
 public class XmlToJsonTest {
 
     @Test
+    public void complicated() {
+        XmlToJson xtj = new XmlToJson(
+                "<?xml version='1.0' ?><people one='two'><student thing='something'><name>John</name><course>Computer Technology</course><semester>6</semester><scheme>E</scheme></student><student><name>Foo</name><course>Industrial Electronics</course><semester>6</semester><scheme>E</scheme></student></people>");
+        xtj.convertXmlToJson();
+    }
+
+    @Test
     public void basicFormats() {
         XmlToJson xtj;
         String[] input = new String[] {
